@@ -1,0 +1,42 @@
+.card {
+    max-width: 200;
+    border: none;
+    boxshadow: none;
+  }
+  
+  .avatar {
+    background-color: red;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    padding: 3px;
+  }
+  
+  @media screen and (max-width: 376px) and (max-height: 700px) {
+    .card {
+      max-width: 200;
+      border: none;
+      boxshadow: none;
+    }
+  
+    .avatar {
+      background-color: red;
+    }
+  
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto;
+      padding: 3px;
+    }
+  
+    .title {
+      height: 80px;
+     width: 400px;
+    
+     line-height: 100px;
+     text-align: center;
+    }
+  }
+  
