@@ -32,7 +32,6 @@ export default function Profile(props: any) {
             <div className="profileInfo">
               <h2 className="profileInfoName">{userEntry}</h2>
 
-              <h2 className="profileInfoDesc">{userEntry}</h2>
               <span className="addOrSend">
                 {" "}
                 {change ? (
