@@ -7,20 +7,12 @@ import { Button } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 export default function Profile(props: any) {
-  //   interface CustomizedState {
-  //     myState: string;
-  //   }
-
   const userLoggato = localStorage.getItem("Loggato");
   const location = useLocation();
   const user = location.state as any;
   const [change, setChange] = React.useState(false);
 
   const userEntry = user.user || "sconosciuto";
-
-  //   const location = useLocation();
-  //   const state = location.state as CustomizedState; // Type Casting, then you can get the params passed via router
-  //   const { myState } = state;
 
   return (
     <>
@@ -62,7 +54,7 @@ export default function Profile(props: any) {
                           localStorage.getItem("notification" + userEntry) ||
                             "[]"
                         ) || [];
-                      let scelta = [...precedent]; // copying the old datas array
+                      let scelta = [...precedent];
                       scelta = [...scelta, userLoggato];
 
                       localStorage.setItem(
