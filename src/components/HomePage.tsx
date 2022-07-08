@@ -7,12 +7,16 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import { NavLink } from "react-router-dom";
+import PostUser from "./PostUser";
 // import { EmojiEmotions } from "@material-ui/icons";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Typography from "@mui/material/Typography";
 // import InputEmoji from "react-input-emoji";
 const HomePage = () => {
-  const user = localStorage.getItem("Loggato");
+  const [user, setUser] = React.useState({
+    us: localStorage.getItem("Loggato") || "sconosciuto",
+    change: false,
+  });
   const [post, setPost] = React.useState("");
   const [test, setTest] = React.useState(
     JSON.parse(localStorage.getItem("PostTotalielement") || "[{}]") || [{}]
@@ -23,6 +27,10 @@ const HomePage = () => {
   React.useEffect(() => {
     console.log(JSON.stringify(test));
     localStorage.setItem("PostTotalielement", JSON.stringify(test));
+    setUser((prevState) => ({
+      ...prevState,
+      change: !user.change,
+    }));
   }, [test]);
 
   function stampaNewPost(data: any) {
@@ -146,7 +154,7 @@ const HomePage = () => {
 
                     var newItem = {
                       id: newnumber,
-                      user: user,
+                      user: user.us,
                       description: newPost,
                       print: "",
                     };
@@ -163,7 +171,8 @@ const HomePage = () => {
             </div>
           </div>
           {/* {console.log("test" + JSON.stringify(test))} */}
-
+          <PostUser user={user.us || "sconosciuto"} />
+          <PostUser user={"Francy00" || "sconosciuto"} />
           {stampaNewPost(test)}
         </div>
       </div>

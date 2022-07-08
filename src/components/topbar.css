@@ -90,7 +90,7 @@
   @media screen and (max-width: 376px) and (max-height: 700px) {
     .topbarContainer {
       height: 50px;
-      width: 106.5%;
+      width: 100%;
       background-color: #1877f2;
       display: flex;
       align-items: center;
@@ -104,7 +104,7 @@
     }
   
     .logo {
-      font-size: 10px;
+      font-size: 15px;
       margin-left: 10px;
       font-weight: bold;
       color: white;
