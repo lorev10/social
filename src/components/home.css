@@ -4,9 +4,7 @@
     boxshadow: none;
   }
   
-  .avatar {
-    background-color: red;
-  }
+ 
   
   .grid-container {
     display: grid;
@@ -22,7 +20,7 @@
     }
   
     .avatar {
-      background-color: red;
+      background-color: red !important;
     }
   
     .grid-container {
