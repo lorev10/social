@@ -74,9 +74,9 @@ const PostUser = ({ user }: { user: string }) => {
                             IsLike[i] = false;
                           }
 
-                          let scelta = [...IsLike]; // copying the old datas array
+                          let scelta = [...IsLike];
 
-                          scelta[i] = !scelta[i]; // replace e.target.value with whatever you want to change it to
+                          scelta[i] = !scelta[i];
 
                           setIsLiked(scelta);
 
@@ -125,7 +125,7 @@ const PostUser = ({ user }: { user: string }) => {
 
                       <img
                         className="likeIcon"
-                        src="asset/heart.png"
+                        src="asset/Heart-image.png"
                         onClick={() => {
                           console.log("preme");
                         }}

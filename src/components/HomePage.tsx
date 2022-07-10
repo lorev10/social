@@ -173,7 +173,7 @@ const HomePage = () => {
           {/* {console.log("test" + JSON.stringify(test))} */}
           <PostUser user={user.us || "sconosciuto"} />
           <PostUser user={"Francy00" || "sconosciuto"} />
-          {stampaNewPost(test)}
+          {/* {stampaNewPost(test)} */}
         </div>
       </div>
     </>
