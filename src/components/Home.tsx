@@ -1,37 +1,23 @@
 import React from "react";
-import { InputLabel } from "@mui/material";
-import { NativeSelect } from "@mui/material";
 import data from "./Data";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
-import Alert from "@mui/material/Alert";
 import { NavLink } from "react-router-dom";
 import "./home.css";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
+
 import Button from "@mui/material/Button";
 const Home = () => {
-  const [alertPresent, setAlertPresent] = React.useState(false);
   const [users, setUsers] = React.useState<string[]>(
     JSON.parse(localStorage.getItem("Registre") || "[]") || []
   );
   const [entry, setEntry] = React.useState(false);
-
-  function disableAlert() {
-    setTimeout(() => {
-      setAlertPresent(false);
-    }, 2000);
-  }
 
   React.useEffect(() => {
     localStorage.setItem("Registre", JSON.stringify(users));
   }, [users]);
 
   function stampaNewUserd(data: string[]) {
-    console.log(data);
     const newData = data.map((data) => {
       return (
         <div className="grid-item" key={data}>
@@ -92,7 +78,6 @@ const Home = () => {
           </Button>
         </NavLink>
       </div>
-      {console.log(newData)}
       <div className="grid-container">
         {newData}
 

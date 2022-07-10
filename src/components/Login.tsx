@@ -68,7 +68,6 @@ export const Login = () => {
                   <></>
                 )}
               </div>
-              {alertPresent ? <div>disableAlert()</div> : <></>}
               <div>
                 {" "}
                 {alertInsert ? (
@@ -77,7 +76,6 @@ export const Login = () => {
                   <></>
                 )}
               </div>
-              {alertInsert ? <div>disableSuccess()</div> : <></>}
             </div>
           </div>
           <div className="divTableRow">
@@ -134,6 +132,8 @@ export const Login = () => {
           </div>
         </div>
       </div>
+      {alertInsert ? disableSuccess() : <></>}
+      {alertPresent ? disableAlert() : <></>}
     </>
   );
 };
