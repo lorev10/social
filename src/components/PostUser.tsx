@@ -12,15 +12,16 @@ const PostUser = ({ user }: { user: string }) => {
   const [isLiked, setIsLiked] = React.useState<boolean[]>([]);
   const [numberId, setNumberId] = React.useState<number>(0);
   const [testLike, setTestLike] = React.useState<number[]>([]);
-
+  const [userLog, setUserLog] = React.useState(
+    localStorage.getItem("Loggato") || "sconosciuto"
+  );
   React.useEffect(() => {
     localStorage.setItem("likepost" + numberId, "" + JSON.stringify(testLike));
   }, [testLike]);
 
   React.useEffect(() => {
-    console.log("cio" + isLiked);
     localStorage.setItem(
-      user + "islike" + numberId,
+      userLog + "islike" + numberId,
       "" + JSON.stringify(isLiked)
     );
     const test =
@@ -66,10 +67,17 @@ const PostUser = ({ user }: { user: string }) => {
                           let IsLike =
                             JSON.parse(
                               localStorage.getItem(
-                                user + "islike" + datat[i].id
+                                userLog + "islike" + datat[i].id
                               ) || "[]"
                             ) || [];
-
+                          console.log(
+                            "user: " +
+                              userLog +
+                              "post" +
+                              datat[i].id +
+                              "result" +
+                              IsLike
+                          );
                           if (IsLike[i] === null || IsLike[i] === undefined) {
                             IsLike[i] = false;
                           }
@@ -96,8 +104,8 @@ const PostUser = ({ user }: { user: string }) => {
 
                             setNumberId(datat[i].id);
 
-                            let newArr = [...testLike]; // copying the old datas array
-                            newArr[i] = number; // replace e.target.value with whatever you want to change it to
+                            let newArr = [...testLike];
+                            newArr[i] = number;
                             setTestLike(newArr);
                           } else {
                             let like =
@@ -115,8 +123,8 @@ const PostUser = ({ user }: { user: string }) => {
 
                             setNumberId(datat[i].id);
 
-                            let newArr = [...testLike]; // copying the old datas array
-                            newArr[i] = number; // replace e.target.value with whatever you want to change it to
+                            let newArr = [...testLike];
+                            newArr[i] = number;
                             setTestLike(newArr);
                           }
                         }}
