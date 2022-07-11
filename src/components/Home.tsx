@@ -35,14 +35,7 @@ const Home = () => {
           <NavLink to="/homepage" style={{ textDecoration: "none" }}>
             <Card className="card" sx={{ maxWidth: 520 }}>
               <CardHeader
-                avatar={
-                  <Avatar
-                    sx={{ bgcolor: "f44336", backgroundColor: "red" }}
-                    aria-label="recipe"
-                  >
-                    {data[0]}
-                  </Avatar>
-                }
+                avatar={<Avatar className="avatar">{data[0]}</Avatar>}
                 title={data}
                 onClick={() => {
                   localStorage.setItem("Loggato", data);

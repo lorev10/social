@@ -80,6 +80,7 @@
   
     .shareInput {
       border: none;
+      background-color: transparent;
     }
   
     .shareInput:focus {
