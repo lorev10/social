@@ -13,7 +13,9 @@ const HomePage = () => {
     JSON.parse(localStorage.getItem("PostTotalielement") || "[{}]") || [{}]
   );
   const [newPost, setNewPost] = React.useState("");
-
+  const [allFriend, setAllFriend] = React.useState<string[]>(
+    JSON.parse(localStorage.getItem("FriendOf" + user.us) || "[]") || []
+  );
   React.useEffect(() => {
     localStorage.setItem("PostTotalielement", JSON.stringify(test));
     setUser((prevState) => ({
@@ -21,6 +23,14 @@ const HomePage = () => {
       change: !user.change,
     }));
   }, [test]);
+
+  function StampaFriend() {
+    console.log("allFriend" + allFriend);
+    const Data = allFriend.map((user) => {
+      return <PostUser user={user || "sconosciuto"} />;
+    });
+    return Data;
+  }
 
   return (
     <>
@@ -98,10 +108,11 @@ const HomePage = () => {
           </div>
           {/* {console.log("test" + JSON.stringify(test))} */}
           <PostUser user={user.us || "sconosciuto"} />
-          <PostUser user={"Francy00" || "sconosciuto"} />
+
           {/* {stampaNewPost(test)} */}
         </div>
       </div>
+      {StampaFriend()}
     </>
   );
 };

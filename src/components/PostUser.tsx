@@ -1,12 +1,5 @@
 import React from "react";
 import "./HomePage.css";
-import CardContent from "@mui/material/CardContent";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Avatar from "@mui/material/Avatar";
-import { NavLink } from "react-router-dom";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import Typography from "@mui/material/Typography";
 import "./PostUser.css";
 const PostUser = ({ user }: { user: string }) => {
   const [isLiked, setIsLiked] = React.useState<boolean[]>([]);

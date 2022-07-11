@@ -4,24 +4,25 @@ import Person from "@mui/icons-material/Person";
 import { Search } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { NavLink } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 
 export default function Topbar() {
   const user = localStorage.getItem("Loggato");
   const [userSearch, setUserSearch] = React.useState("");
+
   const [richieste, SetRichieste] = React.useState<string[]>(
     JSON.parse(localStorage.getItem("notification" + user) || "[]") || []
   );
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const [allFriend, setAllFriend] = React.useState<string[]>(
+    JSON.parse(localStorage.getItem("FriendOf" + user) || "[]") || []
+  );
+  React.useEffect(() => {
+    localStorage.setItem("FriendOf" + user, JSON.stringify(allFriend));
+  }, [allFriend]);
 
   function createRequest(users: string[]) {
     // return <Typography sx={{ p: 2 }}>{users}</Typography>;
@@ -29,7 +30,7 @@ export default function Topbar() {
     const newData = users.map((user: string) => {
       return (
         <Typography className="viewFriend" sx={{ p: 2 }}>
-          <div>
+          <div className="NameRequest">
             <NavLink
               to="/profile"
               state={{ user: user }}
@@ -41,7 +42,13 @@ export default function Topbar() {
           </div>
           <div>
             {" "}
-            <button>Aggiungi</button>
+            <button
+              onClick={() => {
+                setAllFriend([...allFriend, user]);
+              }}
+            >
+              Aggiungi
+            </button>
           </div>
         </Typography>
       );
