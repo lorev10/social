@@ -70,14 +70,7 @@ const PostUser = ({ user }: { user: string }) => {
                                 userLog + "islike" + datat[i].id
                               ) || "[]"
                             ) || [];
-                          console.log(
-                            "user: " +
-                              userLog +
-                              "post" +
-                              datat[i].id +
-                              "result" +
-                              IsLike
-                          );
+
                           if (IsLike[i] === null || IsLike[i] === undefined) {
                             IsLike[i] = false;
                           }

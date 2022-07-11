@@ -16,19 +16,39 @@ import Typography from "@mui/material/Typography";
 export default function Topbar() {
   const user = localStorage.getItem("Loggato");
   const [userSearch, setUserSearch] = React.useState("");
-  const [richieste, SetRichieste] = React.useState(
-    localStorage.getItem("notification" + user) || "0"
+  const [richieste, SetRichieste] = React.useState<string[]>(
+    JSON.parse(localStorage.getItem("notification" + user) || "[]") || []
   );
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
 
   function createRequest(users: string[]) {
-    const newData = users.map(() => {
-      console.log(users);
+    // return <Typography sx={{ p: 2 }}>{users}</Typography>;
+
+    const newData = users.map((user: string) => {
+      return (
+        <Typography className="viewFriend" sx={{ p: 2 }}>
+          <div>
+            <NavLink
+              to="/profile"
+              state={{ user: user }}
+              className="topbarLink"
+              style={{ textDecoration: "none" }}
+            >
+              {user}
+            </NavLink>
+          </div>
+          <div>
+            {" "}
+            <button>Aggiungi</button>
+          </div>
+        </Typography>
+      );
     });
+    return newData;
   }
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -85,8 +105,11 @@ export default function Topbar() {
         <div className="topbarIcons">
           <div className="topbarIconItem">
             <div>
-              <div>
-                {/* onClick={handleClick} */}
+              <div
+                onClick={(event) => {
+                  handleClick(event);
+                }}
+              >
                 <Person />
               </div>
               <div>
@@ -100,7 +123,7 @@ export default function Topbar() {
                     horizontal: "left",
                   }}
                 >
-                  {/* {createRequest(richieste)} */}
+                  {createRequest(richieste)}
                 </Popover>
               </div>
               <span className="topbarIconBadge" onClick={() => {}}>

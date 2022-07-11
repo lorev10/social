@@ -179,5 +179,9 @@
     .nameUser {
       margin-left: 10px;
     }
+    .viewFriend{
+      display: flex;
+      gap: 16px;
+    }
   }
   
