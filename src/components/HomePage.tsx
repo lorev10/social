@@ -15,7 +15,6 @@ const HomePage = () => {
   const [newPost, setNewPost] = React.useState("");
 
   React.useEffect(() => {
-    console.log(JSON.stringify(test));
     localStorage.setItem("PostTotalielement", JSON.stringify(test));
     setUser((prevState) => ({
       ...prevState,

@@ -12,7 +12,18 @@ const Home = () => {
     JSON.parse(localStorage.getItem("Registre") || "[]") || []
   );
   const [entry, setEntry] = React.useState(false);
+  const [theme, setTheme] = React.useState("light-mode");
 
+  const cambiaTema = () => {
+    if (theme === "light-mode") {
+      setTheme("dark-mode");
+    } else {
+      setTheme("light-mode");
+    }
+  };
+  React.useEffect(() => {
+    document.documentElement.className = theme;
+  }, [theme]);
   React.useEffect(() => {
     localStorage.setItem("Registre", JSON.stringify(users));
   }, [users]);
@@ -67,8 +78,15 @@ const Home = () => {
   return (
     <>
       <h1 className="title">
-        <span style={{ color: "black" }}>AMI</span>
-        <span style={{ color: "red" }}>COS</span>
+        <span
+          className="firstName"
+          onClick={() => {
+            cambiaTema();
+          }}
+        >
+          AMI
+        </span>
+        <span className="title2">COS</span>
       </h1>
 
       <div>
