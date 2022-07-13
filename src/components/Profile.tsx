@@ -6,6 +6,9 @@ import { useLocation } from "react-router-dom";
 import { Button } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
+import { Api } from "@mui/icons-material";
+import { ApiContext } from "./api";
+import useQuery from "use-query";
 export default function Profile(props: any) {
   const userLoggato = localStorage.getItem("Loggato");
   const location = useLocation();
@@ -13,6 +16,11 @@ export default function Profile(props: any) {
   const [change, setChange] = React.useState(false);
 
   const userEntry = user.user || "sconosciuto";
+  const api = React.useContext(ApiContext);
+  // const postsQuery = useQuery(
+  //   ["posts", { authorUserId: "", page: 0, size: 10 }],
+  //   async () => api.getPostsByUser({ authorUserId: "", page: 0, size: 10 })
+  // );
 
   return (
     <>

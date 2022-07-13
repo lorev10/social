@@ -7516,6 +7516,11 @@ react-is@^18.0.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
+react-query@2.11.0:
+  version "2.11.0"
+  resolved "https://registry.npmjs.org/react-query/-/react-query-2.11.0.tgz#c0e3ff383508de5b615877bc00bb5ab59cdd61c9"
+  integrity sha512-kVsvZA+qe6ONfsi4rn4t1koxbnpmwRsFev8dRijUdH/p3AocYPYhh9mabaEgBQ+S5uKwFgnODdAc5+ooudnngA==
+
 react-refresh@^0.11.0:
   version "0.11.0"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.11.0.tgz"

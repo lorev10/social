@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import "./Login.css";
 import { NavLink } from "react-router-dom";
+import { ApiContext } from "./api";
 
 export const Login = () => {
   function IsRegistre(username: string) {
@@ -46,6 +47,8 @@ export const Login = () => {
       setAlertInsert(false);
     }, 2000);
   }
+  const inMemoryApi = useContext(ApiContext);
+
   return (
     <>
       <div className="divTable blueTable">
@@ -108,7 +111,8 @@ export const Login = () => {
                             !IsPresent(newUser, users) &&
                             !IsRegistre(newUser)
                           ) {
-                            setUsers((users) => [...users, newUser]);
+                            // setUsers((users) => [...users, newUser]);
+                            inMemoryApi.addUser({ name: newUser, id: "2" });
                             setAlertInsert(true);
                           } else {
                             setAlertPresent(true);
