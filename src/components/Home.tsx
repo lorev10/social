@@ -13,6 +13,7 @@ import {
   ListItemAvatar,
   ListItemText,
   styled,
+  Typography,
 } from "@mui/material";
 import style from "styled-components";
 import { useQuery } from "react-query";
@@ -83,7 +84,7 @@ const Home = () => {
       return (
         <>
           <Demo>
-            <List dense={dense}>
+            <List dense={dense} style={{ background: "#9575cd" }}>
               <NavLink to="/homepage" style={{ textDecoration: "none" }}>
                 <ListItem
                   secondaryAction={
@@ -97,7 +98,15 @@ const Home = () => {
                   </ListItemAvatar>
 
                   <ListItemText
-                    primary={data.name}
+                    disableTypography
+                    primary={
+                      <Typography
+                        style={{ fontFamily: "Arial Black", color: "white" }}
+                      >
+                        {data.name}
+                      </Typography>
+                    }
+                    // primary={data.name}
                     onClick={() => {
                       localStorage.setItem("Loggato", data.name);
                     }}
@@ -146,6 +155,7 @@ const Home = () => {
     <>
       <h1 className="title">
         <span
+          style={{ color: "#c29436 " }}
           className="firstName"
           onClick={() => {
             cambiaTema();
