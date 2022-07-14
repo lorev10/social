@@ -11,6 +11,9 @@ import {
   createEmptyStorage,
   createInMemoryApi,
 } from "./components/inMemomoryApi";
+import style from "styled-components";
+import { createGlobalStyle } from "styled-components";
+
 import { createLocalStorageApi } from "./components/LocalStorageApi";
 
 //come stava
@@ -21,6 +24,20 @@ const stored = localStorage.getItem("userAndPosts");
 const storage = stored ? JSON.parse(stored) : createEmptyStorage();
 const api = createInMemoryApi(storage);
 
+const GlobalStyleBody = createGlobalStyle`
+  body {
+    margin: 0;
+    height: 100%;
+    background: #9575cd;
+    color: #ffffff;
+  }`;
+
+const GlobalStyleApp = createGlobalStyle`
+  body {
+    font-family: sans-serif;
+    text-align: center;
+  }`;
+
 export default function App() {
   const user = localStorage.getItem("Loggato");
   const sizemobile = 500;
@@ -28,6 +45,8 @@ export default function App() {
   return (
     <ApiContext.Provider value={api}>
       <div className="App">
+        <GlobalStyleBody />
+        <GlobalStyleApp />
         <Router>
           <Helmet>
             <title>social</title>
