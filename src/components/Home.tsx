@@ -155,7 +155,7 @@ const Home = () => {
     <>
       <h1 className="title">
         <span
-          style={{ color: "#c29436 " }}
+          style={{ color: "#c29436" }}
           className="firstName"
           onClick={() => {
             cambiaTema();

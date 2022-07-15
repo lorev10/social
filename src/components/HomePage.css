@@ -72,6 +72,8 @@
       margin-top: calc(100% - 97%);
       margin-left: calc(100% - 99%);
       margin-right: calc(100% - 95%);
+      background: white ;
+
     }
   
     .shareWrapper {
@@ -95,6 +97,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background: white ;
+      color: black;
+
     }
   
     .shareOptions {
@@ -112,13 +117,14 @@
     .shareIcon {
       font-size: 15px;
       margin-right: 3px;
+      
     }
   
     .shareOptionText {
       font-size: 20px;
       font-weight: 500;
+      
     }
-  
     .shareButton {
       border: none;
       padding: 3px;
@@ -129,5 +135,6 @@
       color: white;
       width: 100px;
     }
+   
   }
   
