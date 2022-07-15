@@ -1,4 +1,5 @@
 import React from "react";
+import internal from "stream";
 export type Api = {
   getUsers(): Promise<Array<User>>;
   getPostsByUser(param: {
@@ -18,6 +19,8 @@ export type Post = {
   content: string;
   authorUserId: string;
   date: Date;
+  isLike: boolean;
+  numberOfLike: number;
 };
 
 export const ApiContext = React.createContext<Api>(null as any);

@@ -3,7 +3,6 @@ import { Api, Post, User } from "./api";
 export function createInMemoryApi(storage: Storage) {
   const api: Api = {
     async getUsers() {
-      console.log("salve");
       return storage.users;
     },
     async getPostsByUser({ authorUserId, page, size }) {
@@ -14,6 +13,7 @@ export function createInMemoryApi(storage: Storage) {
     },
     async addPost(post) {
       storage.posts.push(post);
+      localStorage.setItem("userAndPosts", JSON.stringify(storage));
     },
     async addUser(user) {
       storage.users.push(user);
