@@ -12,6 +12,7 @@ export function createLocalStorageApi(localStoragekey: string) {
       get(target, property, receve) {
         return (...parameters: any[]) => {
           const result = (api as any)[property](...parameters);
+          localStorage.setItem(localStoragekey, JSON.stringify(storage));
           return result;
         };
       },
