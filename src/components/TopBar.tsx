@@ -1,7 +1,7 @@
 import "./topbar.css";
-import React from "react";
+import React, { useContext } from "react";
 import Person from "@mui/icons-material/Person";
-// import { Search } from "@mui/icons-material";
+// import Searcht from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { NavLink } from "react-router-dom";
 import Popover from "@mui/material/Popover";
@@ -15,6 +15,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home";
+import { ApiContext } from "./api";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -36,7 +38,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
-  pointerEvents: "none",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -59,6 +60,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Topbar() {
   const user = localStorage.getItem("Loggato");
   const [userSearch, setUserSearch] = React.useState("");
+
+  const api = useContext(ApiContext);
 
   const [richieste, SetRichieste] = React.useState<string[]>(
     JSON.parse(localStorage.getItem("notification" + user) || "[]") || []
@@ -114,7 +117,7 @@ export default function Topbar() {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
+  const queryClient = new QueryClient();
   const [viewFriend, setViewFriend] = React.useState(false);
   const IsRichieste = richieste.length != 1;
 
@@ -144,16 +147,35 @@ export default function Topbar() {
           </NavLink>
 
           <Search>
-            <SearchIconWrapper>
-              <NavLink
-                to="/profile"
-                state={{ user: userSearch }}
-                className="topbarLink"
-                style={{ textDecoration: "none" }}
+            {/* <SearchIconWrapper> */}
+            <NavLink
+              to="/profile"
+              state={{ user: userSearch }}
+              className="topbarLink"
+              style={{ textDecoration: "none" }}
+            >
+              <div
+                onClick={() => {
+                  console.log("ciao");
+                }}
               >
-                <SearchIcon style={{ color: "white" }} />
-              </NavLink>
-            </SearchIconWrapper>
+                <SearchIcon
+                  style={{
+                    color: "white",
+                    height: "100%",
+                    position: "absolute",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onClick={() => {
+                    console.log("ciao");
+                  }}
+                />
+              </div>
+            </NavLink>
+            {/* </SearchIconWrapper> */}
+
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
@@ -250,7 +272,8 @@ export default function Topbar() {
               to="/home"
               style={{ textDecoration: "none" }}
               onClick={() => {
-                localStorage.setItem("Loggato", "");
+                api.logout();
+                // queryClient.invalidateQueries("currentUser");
               }}
             >
               <IconButton
@@ -283,7 +306,7 @@ export default function Topbar() {
     //         className="topbarLink"
     //         style={{ textDecoration: "none" }}
     //       >
-    //         <Search className="searchIcon" onClick={() => {}} />
+    //         <Search onClick={() => {}} />
     //       </NavLink>
 
     //       <input

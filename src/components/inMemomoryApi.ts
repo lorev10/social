@@ -32,6 +32,24 @@ export function createInMemoryApi(storage: Storage) {
     async getCurrentUser() {
       return storage.currentUser;
     },
+    async getIdNewUser() {
+      return storage.users.length + 1;
+    },
+    async isPresent(username) {
+      const exists = storage.users;
+
+      for (let i = 0; i < exists.length; i++) {
+        if (exists[i].name === username) {
+          console.log(exists[i].name + "us:" + username);
+          return true;
+        }
+      }
+      console.log("torna false");
+      return false;
+    },
+    async getIdNewPost() {
+      return storage.posts.length + 1;
+    },
   };
 
   return api;

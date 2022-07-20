@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import style from "styled-components";
 import { useQuery } from "react-query";
-import { createEmptyStorage, createInMemoryApi } from "./inMemomoryApi";
 import { ApiContext } from "./api";
 
 const Spinner = style.div`
@@ -39,6 +38,19 @@ const Spinner = style.div`
   }
 `;
 
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+`;
+
+const StyledTyppgraphy = styled(Typography)`
+  color: white;
+  font-family: Arial Black;
+`;
+
+const StyledList = styled(List)`
+  background: #9575cd;
+`;
+
 const Home = () => {
   const [dense, setDense] = React.useState(false);
   const api = useContext(ApiContext);
@@ -51,8 +63,8 @@ const Home = () => {
     const newData = data?.map((data) => {
       return (
         <>
-          <List dense={dense} style={{ background: "#9575cd" }}>
-            <NavLink to="/homepage" style={{ textDecoration: "none" }}>
+          <StyledList dense={dense}>
+            <StyledNavLink to="/homepage">
               <ListItem
                 secondaryAction={
                   <IconButton edge="end" aria-label="delete">
@@ -66,20 +78,15 @@ const Home = () => {
 
                 <ListItemText
                   disableTypography
-                  primary={
-                    <Typography
-                      style={{ fontFamily: "Arial Black", color: "white" }}
-                    >
-                      {data.name}
-                    </Typography>
-                  }
+                  primary={<StyledTyppgraphy>{data.name}</StyledTyppgraphy>}
                   onClick={() => {
-                    localStorage.setItem("Loggato", data.name);
+                    // localStorage.setItem("Loggato", data.name);
+                    api.login(data.name);
                   }}
                 />
               </ListItem>
-            </NavLink>
-          </List>
+            </StyledNavLink>
+          </StyledList>
         </>
       );
     });
@@ -97,11 +104,11 @@ const Home = () => {
       </h1>
 
       <div>
-        <NavLink to="/login" style={{ textDecoration: "none" }}>
+        <StyledNavLink to="/login">
           <Button className="buttonLogin" variant="contained">
             Sign In
           </Button>
-        </NavLink>
+        </StyledNavLink>
       </div>
 
       {status === "loading" ? (
@@ -114,11 +121,6 @@ const Home = () => {
       ) : (
         <>{stampaNewUserd()}</>
       )}
-
-      <div className="grid-container">
-        <Grid item xs={12} md={6}></Grid>
-        {/* {newData} */}
-      </div>
     </>
   );
 };

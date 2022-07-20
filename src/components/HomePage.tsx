@@ -1,53 +1,100 @@
-import React from "react";
+import React, { useContext } from "react";
 import TopBar from "./TopBar";
 import "./HomePage.css";
 import PostUser from "./PostUser";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import { Padding } from "@mui/icons-material";
+import styled from "styled-components";
+import { ApiContext, Post } from "./api";
+import { useQuery } from "react-query";
+import style from "styled-components";
+
+const writePost = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
 
 const HomePage = () => {
-  const [user, setUser] = React.useState({
-    us: localStorage.getItem("Loggato") || "sconosciuto",
-    change: false,
+  const api = useContext(ApiContext);
+
+  const { status, data } = useQuery(["currentUser"], async () => {
+    return await api.getCurrentUser();
   });
+
+  // const [user, setUser] = React.useState({
+  //   us: data,
+  //   change: false,
+  // });
+
   const [test, setTest] = React.useState(
     JSON.parse(localStorage.getItem("PostTotalielement") || "[{}]") || [{}]
   );
   const [newPost, setNewPost] = React.useState("");
-  const [allFriend, setAllFriend] = React.useState<string[]>(
-    JSON.parse(localStorage.getItem("FriendOf" + user.us) || "[]") || []
-  );
-  React.useEffect(() => {
-    localStorage.setItem("PostTotalielement", JSON.stringify(test));
-    setUser((prevState) => ({
-      ...prevState,
-      change: !user.change,
-    }));
-  }, [test]);
+  // const [allFriend, setAllFriend] = React.useState<string[]>(
+  //   JSON.parse(localStorage.getItem("FriendOf" + user.us) || "[]") || []
+  // );
+  // React.useEffect(() => {
+  //   localStorage.setItem("PostTotalielement", JSON.stringify(test));
+  //   setUser((prevState) => ({
+  //     ...prevState,
+  //     change: !user.change,
+  //   }));
+  // }, [test]);
 
-  function StampaFriend() {
-    console.log("allFriend" + allFriend);
-    const Data = allFriend.map((user) => {
-      return <PostUser user={user || "sconosciuto"} />;
-    });
-    return Data;
+  const Button = styled.button`
+    background: transparent;
+    border-radius: 5px;
+    border: 2px solid palevioletred;
+    color: palevioletred;
+    margin: 0 1em;
+    padding: 0.25em 1em;
+  `;
+
+  const buttonCondividi = styled.button`
+    background: transparent;
+    border-radius: 5px;
+    border: 2px solid palevioletred;
+    color: palevioletred;
+    margin: 0 1em;
+    padding: 0.25em 1em;
+  `;
+
+  const Spinner = style.div`
+  border: 10px solid #1966FF;
+  border-top: 10px white solid;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  animation: spin 2s linear infinite;
+  margin-left:160px;
+  margin-top:130px;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
   }
+`;
 
   return (
     <>
-      <TopBar />
-      <div
-        className="homeContainer"
-        style={{
-          display: "flex",
-          width: "100%",
-        }}
-      >
-        <div
-          className="writeSomething"
-          style={{
-            flex: "2",
-          }}
-        >
+      {status === "loading" ? (
+        <span>
+          {" "}
+          <Spinner />
+        </span>
+      ) : status === "error" ? (
+        <span>error</span>
+      ) : (
+        <>
+          <TopBar />
           <div className="share">
             <div className="shareWrapper">
               <div className="shareTop">
@@ -73,14 +120,13 @@ const HomePage = () => {
                     <img
                       className="likeIcon"
                       src="asset/emot.png"
-                      onClick={() => {
-                        console.log("preme");
-                      }}
+                      onClick={() => {}}
                       alt=""
                     />
                     <span className="shareOptionText">emoticons</span>
                   </div>
                 </div>
+                <Button>ss</Button>
                 <button
                   className="shareButton"
                   onClick={() => {
@@ -88,17 +134,20 @@ const HomePage = () => {
 
                     const newnumber = Number(numberPost) + 1;
 
-                    var newItem = {
-                      id: newnumber,
-                      user: user.us,
-                      description: newPost,
-                      print: "",
+                    const timeElapsed = Date.now();
+                    const today = new Date(timeElapsed);
+
+                    //inserire id
+                    const newPostItem: Post = {
+                      id: "4",
+                      content: newPost,
+                      authorUserId: data || "sconosciuto",
+                      date: today,
+                      isLike: false,
+                      numberOfLike: 0,
                     };
 
-                    setTest([...test, newItem]);
-
-                    localStorage.setItem("PostTotali", "" + newnumber);
-                    setNewPost("");
+                    api.addPost(newPostItem);
                   }}
                 >
                   condividi
@@ -106,13 +155,9 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          {/* {console.log("test" + JSON.stringify(test))} */}
-          <PostUser user={user.us || "sconosciuto"} />
-
-          {/* {stampaNewPost(test)} */}
-        </div>
-      </div>
-      {StampaFriend()}
+          <PostUser user={data || "sconosciuto"} />
+        </>
+      )}
     </>
   );
 };

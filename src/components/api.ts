@@ -9,7 +9,14 @@ export type Api = {
   }): Promise<Array<Post>>;
   addPost(post: Post): Promise<void>;
   addUser(user: User): Promise<void>;
+  login(user: string): Promise<void>;
+  logout(): Promise<void>;
+  getCurrentUser(): Promise<string>;
+  getIdNewUser(): Promise<number>;
+  isPresent(username: string): Promise<boolean>;
+  getIdNewPost(): Promise<number>;
 };
+
 export type User = {
   name: string;
   id: string;

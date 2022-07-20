@@ -19,7 +19,7 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-loader-spinner": "^5.1.5",
-    "react-query": "2.11.0",
+    "react-query": "^4.0.0-beta.21",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
