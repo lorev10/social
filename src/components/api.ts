@@ -15,6 +15,7 @@ export type Api = {
   getIdNewUser(): Promise<number>;
   isPresent(username: string): Promise<boolean>;
   getIdNewPost(): Promise<number>;
+  getPostUser(username: string): Promise<Post[]>;
 };
 
 export type User = {
@@ -22,7 +23,7 @@ export type User = {
   id: string;
 };
 export type Post = {
-  id: string;
+  id: number;
   content: string;
   authorUserId: string;
   date: Date;

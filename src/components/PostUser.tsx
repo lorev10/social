@@ -6,41 +6,68 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
+import { useQuery } from "react-query";
+import { ApiContext } from "./api";
 import "./HomePage.css";
 import "./PostUser.css";
+import style from "styled-components";
+
+const Spinner = style.div`
+  border: 10px solid #1966FF;
+  border-top: 10px white solid;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  animation: spin 2s linear infinite;
+  margin-left:160px;
+  margin-top:130px;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 const PostUser = ({ user }: { user: string }) => {
-  const [isLiked, setIsLiked] = React.useState<boolean[]>([]);
-  const [numberId, setNumberId] = React.useState<number>(0);
-  const [testLike, setTestLike] = React.useState<number[]>([]);
-  const [userLog, setUserLog] = React.useState(
-    localStorage.getItem("Loggato") || "sconosciuto"
+  const api = useContext(ApiContext);
+
+  const { status, data } = useQuery(["currentUser"], async () => {
+    return await api.getPostUser(user);
+  });
+  // const location = useLocation();
+  // const user = location.state as string
+
+  return (
+    <>
+      {status === "loading" ? (
+        <span>
+          {" "}
+          <Spinner />
+        </span>
+      ) : status === "error" ? (
+        <span>error</span>
+      ) : (
+        console.log(data)
+        // <>{stampaNewPost(data)}</>
+      )}
+    </>
   );
-  React.useEffect(() => {
-    localStorage.setItem("likepost" + numberId, "" + JSON.stringify(testLike));
-  }, [testLike]);
 
-  React.useEffect(() => {
-    localStorage.setItem(
-      userLog + "islike" + numberId,
-      "" + JSON.stringify(isLiked)
-    );
-    const test =
-      JSON.parse(localStorage.getItem(user + "islike" + numberId) || "[]") ||
-      [];
-    console.log(test);
-  }, [isLiked]);
-
-  function stampaNewPost() {
-    const datat = JSON.parse(
-      localStorage.getItem("PostTotalielement") || "error"
-    );
-    const newData = Object.keys(datat).map((keyName, i) => {
+  function stampaNewPost(datat: any) {
+    const newData: any = Object.keys(datat).map((keyName, i) => {
+      console.log("entro" + JSON.stringify(datat[i]));
       if (Object.keys(datat[i]).length === 0) {
+        console.log("nessun dato");
       } else {
         if (datat[i].user === user) {
           return (
             <>
+              {console.log(datat[i])}
               <Card
                 style={{
                   width: "350px",
@@ -56,7 +83,7 @@ const PostUser = ({ user }: { user: string }) => {
                     </div>
                     <div>
                       <Typography gutterBottom variant="h5" component="div">
-                        {datat[i].user}
+                        {datat[i].authorUserId}
                       </Typography>
                     </div>
                   </CardContent>
@@ -66,7 +93,7 @@ const PostUser = ({ user }: { user: string }) => {
                       color="text.secondary"
                       fontSize="30px"
                     >
-                      {datat[i].description}
+                      {datat[i].content}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -74,62 +101,62 @@ const PostUser = ({ user }: { user: string }) => {
                   <img
                     className="likeIcon"
                     src="asset/like.png"
-                    onClick={() => {
-                      let IsLike =
-                        JSON.parse(
-                          localStorage.getItem(
-                            userLog + "islike" + datat[i].id
-                          ) || "[]"
-                        ) || [];
+                    // onClick={() => {
+                    //   let IsLike =
+                    //     JSON.parse(
+                    //       localStorage.getItem(
+                    //         userLog + "islike" + datat[i].id
+                    //       ) || "[]"
+                    //     ) || [];
 
-                      if (IsLike[i] === null || IsLike[i] === undefined) {
-                        IsLike[i] = false;
-                      }
+                    //   if (IsLike[i] === null || IsLike[i] === undefined) {
+                    //     IsLike[i] = false;
+                    //   }
 
-                      let scelta = [...IsLike];
+                    //   let scelta = [...IsLike];
 
-                      scelta[i] = !scelta[i];
+                    //   scelta[i] = !scelta[i];
 
-                      setIsLiked(scelta);
+                    //   setIsLiked(scelta);
 
-                      if (IsLike[i] === false) {
-                        let like =
-                          JSON.parse(
-                            localStorage.getItem("likepost" + datat[i].id) ||
-                              "[]"
-                          ) || [];
+                    //   if (IsLike[i] === false) {
+                    //     let like =
+                    //       JSON.parse(
+                    //         localStorage.getItem("likepost" + datat[i].id) ||
+                    //           "[]"
+                    //       ) || [];
 
-                        if (like[i] === null || like[i] === undefined) {
-                          like[i] = "0";
-                        }
+                    //     if (like[i] === null || like[i] === undefined) {
+                    //       like[i] = "0";
+                    //     }
 
-                        let number = parseInt(like[i]) + 1;
+                    //     let number = parseInt(like[i]) + 1;
 
-                        setNumberId(datat[i].id);
+                    //     setNumberId(datat[i].id);
 
-                        let newArr = [...testLike];
-                        newArr[i] = number;
-                        setTestLike(newArr);
-                      } else {
-                        let like =
-                          JSON.parse(
-                            localStorage.getItem("likepost" + datat[i].id) ||
-                              "[]"
-                          ) || [];
+                    //     let newArr = [...testLike];
+                    //     newArr[i] = number;
+                    //     setTestLike(newArr);
+                    //   } else {
+                    //     let like =
+                    //       JSON.parse(
+                    //         localStorage.getItem("likepost" + datat[i].id) ||
+                    //           "[]"
+                    //       ) || [];
 
-                        if (like[i] === null || like[i] === undefined) {
-                          like[i] = "0";
-                        }
+                    //     if (like[i] === null || like[i] === undefined) {
+                    //       like[i] = "0";
+                    //     }
 
-                        let number = parseInt(like[i]) - 1;
+                    //     let number = parseInt(like[i]) - 1;
 
-                        setNumberId(datat[i].id);
+                    //     setNumberId(datat[i].id);
 
-                        let newArr = [...testLike];
-                        newArr[i] = number;
-                        setTestLike(newArr);
-                      }
-                    }}
+                    //     let newArr = [...testLike];
+                    //     newArr[i] = number;
+                    //     setTestLike(newArr);
+                    //   }
+                    // }}
                     alt=""
                   />
                   <img
@@ -140,9 +167,6 @@ const PostUser = ({ user }: { user: string }) => {
                     }}
                     alt=""
                   />
-                  <span className="postLikeCounter">
-                    {testLike[i]} persone a cui piace
-                  </span>
                   <div className="destra">
                     <span className="postCommentText">
                       {" "}
@@ -163,10 +187,7 @@ const PostUser = ({ user }: { user: string }) => {
         }
       }
     });
-
     return newData;
   }
-  return <div>{stampaNewPost()}</div>;
 };
-
 export default PostUser;

@@ -273,6 +273,7 @@ export default function Topbar() {
               style={{ textDecoration: "none" }}
               onClick={() => {
                 api.logout();
+                queryClient.invalidateQueries();
                 // queryClient.invalidateQueries("currentUser");
               }}
             >

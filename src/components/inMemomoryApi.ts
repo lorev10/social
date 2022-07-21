@@ -12,13 +12,18 @@ export function createInMemoryApi(storage: Storage) {
       await new Promise((resolve) =>
         setTimeout(resolve, Math.round(Math.random() * 5001))
       );
-      return storage.posts
+      const rit = storage.posts
         .filter((post) => post.authorUserId === authorUserId)
         .sort((a, b) => a.date.getTime() - b.date.getTime())
         .slice(page * size, (page + 1) * size);
+      console.log("dentro il metodo" + JSON.stringify(rit));
+
+      return rit;
     },
     async addPost(post) {
       storage.posts.push(post);
+      console.log("aggiungo" + post.authorUserId);
+      console.log("lo storage ha" + JSON.stringify(storage.posts));
     },
     async addUser(user) {
       storage.users.push(user);
@@ -40,15 +45,22 @@ export function createInMemoryApi(storage: Storage) {
 
       for (let i = 0; i < exists.length; i++) {
         if (exists[i].name === username) {
-          console.log(exists[i].name + "us:" + username);
           return true;
         }
       }
-      console.log("torna false");
       return false;
     },
     async getIdNewPost() {
       return storage.posts.length + 1;
+    },
+    async getPostUser(username) {
+      const postUser: Post[] = [];
+      for (let i = 0; i < storage.posts.length; i++) {
+        if (storage.posts[i].authorUserId === username) {
+          postUser.push(storage.posts[i]);
+        }
+      }
+      return postUser;
     },
   };
 
