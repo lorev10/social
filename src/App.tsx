@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
-import { Helmet } from "react-helmet";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import HomePage from "./components/HomePage";
@@ -10,10 +9,8 @@ import {
   createEmptyStorage,
   createInMemoryApi,
 } from "./components/inMemomoryApi";
-import style from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { createLocalStorageApi } from "./components/LocalStorageApi";
 
 //come stava
 // const inMemoryApi = createInMemoryApi(createEmptyStorage());

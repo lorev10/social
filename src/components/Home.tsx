@@ -55,7 +55,7 @@ const Home = () => {
   const [dense, setDense] = React.useState(false);
   const api = useContext(ApiContext);
 
-  const { status, data } = useQuery(["user"], async () => {
+  const { status, data } = useQuery(["userRegister"], async () => {
     return await api.getUsers();
   });
 
@@ -80,7 +80,6 @@ const Home = () => {
                   disableTypography
                   primary={<StyledTyppgraphy>{data.name}</StyledTyppgraphy>}
                   onClick={() => {
-                    // localStorage.setItem("Loggato", data.name);
                     api.login(data.name);
                   }}
                 />

@@ -9,8 +9,6 @@ import {
 import React, { useContext } from "react";
 import { useQuery } from "react-query";
 import { ApiContext } from "./api";
-import "./HomePage.css";
-import "./PostUser.css";
 import style from "styled-components";
 
 const Spinner = style.div`

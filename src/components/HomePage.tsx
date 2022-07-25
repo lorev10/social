@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import TopBar from "./TopBar";
-import "./HomePage.css";
 import PostUser from "./PostUser";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { Padding } from "@mui/icons-material";
 import styled from "styled-components";
 import { ApiContext, Post } from "./api";
-import { QueryClient, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import style from "styled-components";
 import {
   Avatar,
@@ -16,6 +15,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import PrintPostUser from "./PrintPostUser";
 
 const writePost = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -26,21 +26,22 @@ const writePost = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 const Button = styled.button`
-  background: transparent;
   border-radius: 5px;
-  border: 2px solid palevioletred;
-  color: palevioletred;
+  border: 5px solid green;
+  color: green;
   margin: 0 1em;
   padding: 0.25em 1em;
 `;
 
-const buttonCondividi = styled.button`
-  background: transparent;
+const ButtonCondividi = styled.button`
+  border: none;
+  padding: 3px;
   border-radius: 5px;
-  border: 2px solid palevioletred;
-  color: palevioletred;
-  margin: 0 1em;
-  padding: 0.25em 1em;
+  background-color: green;
+  font-weight: 500;
+  cursor: pointer;
+  color: white;
+  width: 100px;
 `;
 
 const Spinner = style.div`
@@ -63,12 +64,60 @@ const Spinner = style.div`
   }
 `;
 
-function stampaPost(posts: Post[], user: string) {
-  const newData: any = Object.keys(posts).map((keyName, i) => {
-    if (Object.keys(posts[i]).length === 0) {
-      console.log("nessun dato");
-    } else {
-      if (posts[i].authorUserId === user) {
+const HomePage = () => {
+  const api = useContext(ApiContext);
+
+  const { status, data: utenteConnesso } = useQuery(
+    ["currentUser"],
+    async () => {
+      return await api.getCurrentUser();
+    }
+  );
+  const currentUser = utenteConnesso || "";
+
+  const {
+    status: statusQueryNewPostId,
+    data: idPost,
+    refetch: refatchId,
+  } = useQuery(["idPost", currentUser], api.getIdNewPost, {
+    enabled: !!currentUser,
+  });
+
+  const {
+    status: statusQueryAllPost,
+    data: allPost,
+    refetch: refatchAllPost,
+  } = useQuery(
+    ["allPost", currentUser],
+    async () => {
+      return await api.getPostUser(currentUser || "error");
+    },
+    {
+      enabled: !!currentUser,
+    }
+  );
+
+  const { status: statusQueryNameFriends, data: nameFriends } = useQuery(
+    ["allFriend", currentUser],
+    async () => {
+      return await api.getFriends(currentUser || "error");
+    },
+    {
+      enabled: !!currentUser,
+    }
+  );
+  //refresh query quando clicca condividi
+  const handleClick = () => {
+    refatchAllPost();
+    refatchId();
+  };
+  const [newPost, setNewPost] = React.useState("");
+  const queryClient = new QueryClient();
+
+  function stampaPost(posts: Post[], user: string) {
+    const newData: any = Object.keys(posts).map((keyName, i) => {
+      if (Object.keys(posts[i]).length === 0) {
+      } else {
         return (
           <>
             <Card
@@ -101,161 +150,83 @@ function stampaPost(posts: Post[], user: string) {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <img className="likeIcon" src="asset/like.png" alt="" />
                 <img
                   className="likeIcon"
-                  src="asset/Heart-image.png"
-                  onClick={() => {
-                    console.log("preme");
-                  }}
+                  src="asset/like.png"
                   alt=""
+                  onClick={() => {
+                    api.likePost(posts[i].id);
+                    queryClient.invalidateQueries(["idPost"]);
+                    queryClient.invalidateQueries(["allPost"]);
+                    handleClick();
+                    console.log("sto cliccando");
+                  }}
                 />
-                <div className="destra">
-                  <span className="postCommentText">
-                    {" "}
-                    <img
-                      className="likeIcon"
-                      src="asset/commenta.png"
-                      onClick={() => {
-                        // addRemove;
-                      }}
-                      alt=""
-                    />
-                  </span>
-                </div>
+                piace a {posts[i].numberOfLike}
               </CardActions>
             </Card>
           </>
         );
       }
-    }
-  });
-  return newData;
-}
-const HomePage = () => {
-  const api = useContext(ApiContext);
-
-  const { status, data: utenteConnesso } = useQuery(
-    ["currentUser"],
-    async () => {
-      return await api.getCurrentUser();
-    }
-  );
-  const userC = utenteConnesso;
-
-  const {
-    status: secondQueryStatus,
-    data: idPost,
-    refetch: refatchId,
-  } = useQuery(["idPost", userC], api.getIdNewPost, {
-    enabled: !!userC,
-  });
-
-  const {
-    status: thirdQueryStatus,
-    data: allPost,
-    refetch: refatchAllPost,
-  } = useQuery(
-    ["allPost", userC],
-    async () => {
-      return await api.getPostUser(userC || "error");
-    },
-    {
-      enabled: !!userC,
-    }
-  );
-  const handleClick = () => {
-    refatchAllPost();
-    refatchId();
-  };
-  const [newPost, setNewPost] = React.useState("");
-  const queryClient = new QueryClient();
+    });
+    return newData;
+  }
 
   return (
     <>
-      <TopBar />
-
       {status === "loading" ||
-      secondQueryStatus === "loading" ||
-      thirdQueryStatus === "loading" ? (
+      statusQueryNewPostId === "loading" ||
+      statusQueryAllPost === "loading" ||
+      statusQueryNameFriends === "loading" ? (
         <span>
           {" "}
           <Spinner />
         </span>
       ) : status === "error" ||
-        secondQueryStatus === "error" ||
-        thirdQueryStatus === "error" ? (
+        statusQueryNewPostId === "error" ||
+        statusQueryAllPost === "error" ||
+        statusQueryNameFriends === "error" ? (
         <span>error</span>
       ) : (
         <>
+          <TopBar />
           <h1>Benvenuto {utenteConnesso}</h1>
-          <div className="share">
-            <div className="shareWrapper">
-              <div className="shareTop">
-                <input
-                  placeholder="Cosa stai pensando? "
-                  className="shareInput"
-                  value={newPost}
-                  onChange={(event) => {
-                    setNewPost(event.currentTarget.value);
-                  }}
-                />
-              </div>
-              <hr className="shareHr" />
-              <div className="shareBottom">
-                <div className="shareOptions">
-                  <div className="shareOption">
-                    <ThumbUpIcon htmlColor="blue" className="ThumbUpIcon" />
-                    <span className="shareOptionText">like</span>
-                  </div>
-                  <div className="shareOption"></div>
+          <input
+            placeholder="Cosa stai pensando? "
+            value={newPost}
+            onChange={(event) => {
+              setNewPost(event.currentTarget.value);
+            }}
+          />
+          {/* <Button>ss</Button> */}
+          <ButtonCondividi
+            onClick={() => {
+              const timeElapsed = Date.now();
+              const today = new Date(timeElapsed);
 
-                  <div className="shareOption">
-                    <img
-                      className="likeIcon"
-                      src="asset/emot.png"
-                      onClick={() => {}}
-                      alt=""
-                    />
-                    <span className="shareOptionText">emoticons</span>
-                  </div>
-                </div>
-                {/* <Button>ss</Button> */}
-                <button
-                  className="shareButton"
-                  onClick={() => {
-                    const timeElapsed = Date.now();
-                    const today = new Date(timeElapsed);
+              //inserire id
+              const newPostItem: Post = {
+                id: idPost,
+                content: newPost,
+                authorUserId: utenteConnesso || "sconosciuto",
+                date: today,
+                numberOfLike: 0,
+              };
 
-                    //inserire id
-                    const newPostItem: Post = {
-                      id: idPost,
-                      content: newPost,
-                      authorUserId: utenteConnesso || "sconosciuto",
-                      date: today,
-                      isLike: false,
-                      numberOfLike: 0,
-                    };
-
-                    api.addPost(newPostItem);
-                    queryClient.invalidateQueries(["idPost"]);
-                    queryClient.invalidateQueries(["allPost"]);
-                    handleClick();
-                  }}
-                >
-                  condividi
-                </button>
-              </div>
-            </div>
-          </div>
+              api.addPost(newPostItem);
+              api.createConnectionUserPost(utenteConnesso, idPost);
+              queryClient.invalidateQueries(["idPost"]);
+              queryClient.invalidateQueries(["allPost"]);
+              handleClick();
+            }}
+          >
+            condividi
+          </ButtonCondividi>
+          {/* {console.log(JSON.stringify("gli amici sono" + nameFriends))} */}
           {stampaPost(allPost, utenteConnesso)}
-          {console.log("allPost:" + JSON.stringify(allPost))}
-
-          {/* <MyPost user={utenteConnesso} /> */}
+          <PrintPostUser user={nameFriends} />
         </>
       )}
-
-      {/* <PostUser user={data || "sconosciuto"} /> */}
     </>
   );
 };

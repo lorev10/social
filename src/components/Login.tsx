@@ -15,14 +15,12 @@ const StyledButtonDistance = styled.span`
 const StyledCounter = styled.div`
   margin-top: 20px;
 `;
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+`;
 
 export const Login = () => {
   const [newUser, setNewUser] = React.useState("");
-  const [users, setUsers] = React.useState<string[]>(
-    JSON.parse(localStorage.getItem("Registre") || "[]") || []
-  );
-  const [alertPresent, setAlertPresent] = React.useState(false);
-  const [alertInsert, setAlertInsert] = React.useState(false);
   const api = useContext(ApiContext);
 
   return (
@@ -47,21 +45,26 @@ export const Login = () => {
       </div>
       <StyledCounter>
         {" "}
-        <StyledButtonDistance>
-          <Button
-            variant="contained"
-            className="buttonLogin"
-            onClick={() => {
-              setNewUser("");
-              api.addUser({
-                name: newUser,
-                id: "" + api.getIdNewUser(),
-              });
-            }}
-          >
-            Registra
-          </Button>
-        </StyledButtonDistance>
+        <StyledNavLink to="/homepage">
+          <StyledButtonDistance>
+            <Button
+              variant="contained"
+              className="buttonLogin"
+              onClick={() => {
+                setNewUser("");
+                api.addUser({
+                  name: newUser,
+                  id: "" + api.getIdNewUser(),
+                  friends: [],
+                  request: [],
+                });
+                api.login(newUser);
+              }}
+            >
+              Registra
+            </Button>
+          </StyledButtonDistance>
+        </StyledNavLink>
         <span>
           <NavLink to="/Home" style={{ textDecoration: "none" }}>
             <Button className="returnHome" variant="contained">
