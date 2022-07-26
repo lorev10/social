@@ -1,4 +1,4 @@
-import { Api, Post, User, UserLikePost } from "./api";
+import { Api, Comment, Post, User, UserLikePost } from "./api";
 
 export function createInMemoryApi(storage: Storage) {
   const api: Api = {
@@ -16,7 +16,6 @@ export function createInMemoryApi(storage: Storage) {
         .filter((post) => post.authorUserId === authorUserId)
         .sort((a, b) => a.date.getTime() - b.date.getTime())
         .slice(page * size, (page + 1) * size);
-      console.log("dentro il metodo" + JSON.stringify(rit));
 
       return rit;
     },
@@ -103,12 +102,10 @@ export function createInMemoryApi(storage: Storage) {
       for (let i = 0; i < storage.posts.length; i++) {
         for (let j = 0; j < users.length; j++) {
           if (storage.posts[i].authorUserId === users[j]) {
-            console.log(storage.posts[i]);
             postUser.push(storage.posts[i]);
           }
         }
       }
-      console.log(postUser);
       return postUser;
     },
     async getIsLikePost(user: string, id: number) {
@@ -134,13 +131,23 @@ export function createInMemoryApi(storage: Storage) {
       });
     },
     async likePost(id) {
-      console.log(JSON.stringify(storage.posts));
       storage.posts.map((post) => {
         if (post.id === id) {
           post.numberOfLike++;
-          console.log(post.id);
         }
       });
+    },
+    async addComment(comment: Comment) {
+      storage.comments.push(comment);
+    },
+    async getComment(id: number) {
+      const comment: Comment[] = [];
+      for (let i = 0; i < storage.comments.length; i++) {
+        if (id === storage.comments[i].idPost) {
+          comment.push(storage.comments[i]);
+        }
+      }
+      return comment;
     },
   };
   return api;
@@ -151,6 +158,7 @@ type Storage = {
   posts: Array<Post>;
   currentUser: string;
   usersLikePost: Array<UserLikePost>;
+  comments: Array<Comment>;
 };
 export function createEmptyStorage() {
   const emptyStorage: Storage = {
@@ -158,6 +166,7 @@ export function createEmptyStorage() {
     posts: [],
     currentUser: "",
     usersLikePost: [],
+    comments: [],
   };
   return emptyStorage;
 }

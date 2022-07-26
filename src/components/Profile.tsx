@@ -1,8 +1,6 @@
 import Topbar from "./TopBar";
-import PostUser from "./PostUser";
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { Button } from "@mui/material";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
 import { ApiContext } from "./api";
@@ -12,7 +10,6 @@ import { useQuery } from "react-query";
 
 const StyleDivProfile = style.div`
 display: flex;
-
 `;
 
 const StyleDivRightTop = style.div`
@@ -69,7 +66,6 @@ const StyleProfileUserImg = style.img`
 `;
 
 const StyleaAddOrSend = style.span`
-
 transform: translate(100px, 0px) !important;
 `;
 
@@ -123,13 +119,12 @@ export default function Profile(props: any) {
                         titleAccess="invia richiesta di amicizia"
                         onClick={() => {
                           setChange(true);
-
                           api.addFriendRequest(userLoggato, profiloVisitato);
                         }}
                       />
                     )}
                   </StyleaAddOrSend>
-                  {/* <PrintPostUser user={profiloVisitato || utenteConnesso} /> */}
+                  <PrintPostUser user={profiloVisitato || utenteConnesso} />
                 </StyleProfileInfo>
               </div>
             </StyleDivRightTop>

@@ -1,40 +1,17 @@
 import React, { useContext } from "react";
-import Person from "@mui/icons-material/Person";
-// import Searcht from "@mui/icons-material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { NavLink } from "react-router-dom";
-
-import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import { Box } from "@mui/system";
 import {
-  AppBar,
   Avatar,
-  Badge,
   Card,
   CardActionArea,
   CardActions,
   CardContent,
-  IconButton,
-  Toolbar,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import HomeIcon from "@mui/icons-material/Home";
 import { ApiContext, Post } from "./api";
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-  useQueryClient,
-} from "react-query";
+import { useQuery } from "react-query";
+import { NavLink } from "react-router-dom";
 
 export default function PrintPostUser(props: any) {
-  const [userSearch, setUserSearch] = React.useState("");
   const api = useContext(ApiContext);
   const users = props.user;
 
@@ -82,6 +59,17 @@ export default function PrintPostUser(props: any) {
               </CardActionArea>
               <CardActions>
                 <img className="likeIcon" src="asset/like.png" alt="" />
+                <NavLink
+                  to="/comments"
+                  state={{ post: posts[i], userLoggato: users }}
+                >
+                  <img
+                    src="asset/commenta.png"
+                    alt=""
+                    style={{ height: "30px" }}
+                    onClick={() => {}}
+                  />
+                </NavLink>
               </CardActions>
             </Card>
           </>
@@ -97,10 +85,7 @@ export default function PrintPostUser(props: any) {
       ) : status === "error" ? (
         <span>error</span>
       ) : (
-        <>
-          {stampaPost(postUsers)}
-          {console.log("ddd " + postUsers)}
-        </>
+        <>{stampaPost(postUsers)}</>
       )}
     </>
   );

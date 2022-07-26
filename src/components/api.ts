@@ -1,5 +1,4 @@
 import React from "react";
-import internal from "stream";
 export type Api = {
   getUsers(): Promise<Array<User>>;
   getPostsByUser(param: {
@@ -26,6 +25,8 @@ export type Api = {
   createConnectionUserPost(user: string, id: number): Promise<void>;
   changeValueIsLikePost(user: string, id: number): Promise<void>;
   likePost(id: number): Promise<void>;
+  addComment(comment: Comment): Promise<void>;
+  getComment(id: number): Promise<Array<Comment>>;
 };
 
 export type User = {
@@ -45,6 +46,13 @@ export type UserLikePost = {
   userIsLike: string;
   idPostIsLike: number;
   isLike: boolean;
+};
+
+export type Comment = {
+  userWhoComment: string;
+  idPost: number;
+  date: Date;
+  comment: string;
 };
 
 export const ApiContext = React.createContext<Api>(null as any);

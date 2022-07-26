@@ -1,13 +1,9 @@
 import React, { useContext } from "react";
 import Person from "@mui/icons-material/Person";
-// import Searcht from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { NavLink } from "react-router-dom";
-
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
 import { Box } from "@mui/system";
 import { AppBar, Badge, IconButton, Toolbar } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -251,10 +247,6 @@ export default function Topbar() {
                     onClick={() => {
                       api.logout();
                       queryClient.invalidateQueries();
-                      queryClient.invalidateQueries(["nameFriends"]);
-                      queryClient.invalidateQueries(["currentUserProfile"]);
-
-                      queryClient.invalidateQueries(["requestFriends"]);
                     }}
                   >
                     <IconButton

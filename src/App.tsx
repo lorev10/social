@@ -11,14 +11,16 @@ import {
 } from "./components/inMemomoryApi";
 import { createGlobalStyle } from "styled-components";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { createLocalStorageApi } from "./components/LocalStorageApi";
+import { Comments } from "./components/Comments";
 
 //come stava
-// const inMemoryApi = createInMemoryApi(createEmptyStorage());
-// const localStorageApi = createLocalStorageApi("0");
+const api = createInMemoryApi(createEmptyStorage());
+const localStorageApi = createLocalStorageApi("0");
 const queryClient = new QueryClient();
-const stored = localStorage.getItem("userAndPosts");
-const storage = stored ? JSON.parse(stored) : createEmptyStorage();
-const api = createInMemoryApi(storage);
+// const stored = localStorage.getItem("userAndPosts");
+// const storage = stored ? JSON.parse(stored) : createEmptyStorage();
+// const api = createInMemoryApi(storage);
 
 const GlobalStyleBody = createGlobalStyle`
   body {
@@ -46,6 +48,7 @@ export default function App() {
             <Route path="/*" element={<Home />} />
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/comments" element={<Comments />} />
           </Routes>
         </Router>
       </QueryClientProvider>
