@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
-import datas from "./Data";
 import Avatar from "@mui/material/Avatar";
 import { NavLink } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import {
-  Grid,
   IconButton,
   List,
   ListItem,

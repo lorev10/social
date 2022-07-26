@@ -1,11 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import TopBar from "./TopBar";
-import PostUser from "./PostUser";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import { Padding } from "@mui/icons-material";
 import styled from "styled-components";
 import { ApiContext, Post } from "./api";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import style from "styled-components";
 import {
   Avatar,
@@ -16,22 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import PrintPostUser from "./PrintPostUser";
-
-const writePost = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-const Button = styled.button`
-  border-radius: 5px;
-  border: 5px solid green;
-  color: green;
-  margin: 0 1em;
-  padding: 0.25em 1em;
-`;
+import { NavLink } from "react-router-dom";
 
 const ButtonCondividi = styled.button`
   border: none;
@@ -66,7 +48,7 @@ const Spinner = style.div`
 
 const HomePage = () => {
   const api = useContext(ApiContext);
-
+  const [numberOfLik, setNumberOfLik] = React.useState(0);
   const { status, data: utenteConnesso } = useQuery(
     ["currentUser"],
     async () => {
@@ -74,6 +56,12 @@ const HomePage = () => {
     }
   );
   const currentUser = utenteConnesso || "";
+
+  useEffect(() => {
+    queryClient.invalidateQueries(["idPost"]);
+    queryClient.invalidateQueries(["allPost"]);
+    handleClick();
+  }, [numberOfLik]);
 
   const {
     status: statusQueryNewPostId,
@@ -102,9 +90,7 @@ const HomePage = () => {
     async () => {
       return await api.getFriends(currentUser || "error");
     },
-    {
-      enabled: !!currentUser,
-    }
+    { enabled: !!currentUser }
   );
   //refresh query quando clicca condividi
   const handleClick = () => {
@@ -112,7 +98,7 @@ const HomePage = () => {
     refatchId();
   };
   const [newPost, setNewPost] = React.useState("");
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   function stampaPost(posts: Post[], user: string) {
     const newData: any = Object.keys(posts).map((keyName, i) => {
@@ -154,15 +140,25 @@ const HomePage = () => {
                   className="likeIcon"
                   src="asset/like.png"
                   alt=""
+                  style={{ height: "30px" }}
                   onClick={() => {
                     api.likePost(posts[i].id);
-                    queryClient.invalidateQueries(["idPost"]);
-                    queryClient.invalidateQueries(["allPost"]);
-                    handleClick();
-                    console.log("sto cliccando");
+                    setNumberOfLik(posts[i].numberOfLike);
                   }}
                 />
-                piace a {posts[i].numberOfLike}
+                piace a{" "}
+                {numberOfLik === 0 ? posts[i].numberOfLike : numberOfLik}
+                <NavLink
+                  to="/comments"
+                  state={{ post: posts[i], userLoggato: currentUser }}
+                >
+                  <img
+                    src="asset/commenta.png"
+                    alt=""
+                    style={{ height: "30px" }}
+                    onClick={() => {}}
+                  />
+                </NavLink>
               </CardActions>
             </Card>
           </>
@@ -198,7 +194,6 @@ const HomePage = () => {
               setNewPost(event.currentTarget.value);
             }}
           />
-          {/* <Button>ss</Button> */}
           <ButtonCondividi
             onClick={() => {
               const timeElapsed = Date.now();
@@ -222,7 +217,6 @@ const HomePage = () => {
           >
             condividi
           </ButtonCondividi>
-          {/* {console.log(JSON.stringify("gli amici sono" + nameFriends))} */}
           {stampaPost(allPost, utenteConnesso)}
           <PrintPostUser user={nameFriends} />
         </>
