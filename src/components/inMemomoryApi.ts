@@ -124,18 +124,18 @@ export function createInMemoryApi(storage: Storage) {
       storage.usersLikePost.push(newPostItem);
     },
     async changeValueIsLikePost(user: string, id: number) {
-      storage.usersLikePost.map((IsLikePost) => {
+      for (const IsLikePost of storage.usersLikePost) {
         if (IsLikePost.idPostIsLike === id && IsLikePost.userIsLike === user) {
           IsLikePost.isLike = !IsLikePost.isLike;
         }
-      });
+      }
     },
     async likePost(id) {
-      storage.posts.map((post) => {
+      for (const post of storage.posts) {
         if (post.id === id) {
           post.numberOfLike++;
         }
-      });
+      }
     },
     async addComment(comment: Comment) {
       storage.comments.push(comment);
