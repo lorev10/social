@@ -41,42 +41,6 @@ export default function Topbar() {
     }
   );
 
-  function createRequest(userFriends: string[]) {
-    const newData = userFriends.map((userFriend: string) => {
-      return (
-        <Typography sx={{ p: 2 }}>
-          <div>
-            {/* <NavLink
-              to="/profile"
-              state={{ user: userFriend }}
-              className="topbarLink"
-              style={{ textDecoration: "none" }}
-            > */}
-            {userFriend}
-            {/* </NavLink> */}
-          </div>
-          <div>
-            {" "}
-            <button
-              onClick={() => {
-                api.addFriend(user, userFriend);
-                api.addFriend(userFriend, user);
-
-                api.removeRequest(user, userFriend);
-                queryClient.invalidateQueries(["requestFriends"]);
-                queryClient.invalidateQueries(["nameFriends"]);
-
-                //bisogna invalidare anche la query dei post degli amici
-              }}
-            >
-              Aggiungi
-            </button>
-          </div>
-        </Typography>
-      );
-    });
-    return newData;
-  }
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -87,7 +51,6 @@ export default function Topbar() {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-  // const queryClient = new QueryClient();
   const queryClient = useQueryClient();
   const [anchorElNavBar, setAnchorElNavBar] =
     React.useState<null | HTMLElement>(null);
@@ -235,7 +198,32 @@ export default function Topbar() {
                             horizontal: "left",
                           }}
                         >
-                          {createRequest(requestFriends)}
+                          {requestFriends.map((userFriend: string) => {
+                            return (
+                              <Typography sx={{ p: 2 }}>
+                                <div>{userFriend}</div>
+                                <div>
+                                  {" "}
+                                  <button
+                                    onClick={() => {
+                                      api.addFriend(user, userFriend);
+                                      api.addFriend(userFriend, user);
+
+                                      api.removeRequest(user, userFriend);
+                                      queryClient.invalidateQueries([
+                                        "requestFriends",
+                                      ]);
+                                      queryClient.invalidateQueries([
+                                        "nameFriends",
+                                      ]);
+                                    }}
+                                  >
+                                    Aggiungi
+                                  </button>
+                                </div>
+                              </Typography>
+                            );
+                          })}
                         </Popover>
                       </div>
                     </Badge>

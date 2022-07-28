@@ -39,25 +39,23 @@ export function createInMemoryApi(storage: Storage) {
     },
     async isPresent(username) {
       const exists = storage.users;
+      const IsExist = !!exists.find((element, index) => {
+        return element.name === username;
+      });
 
-      for (let i = 0; i < exists.length; i++) {
-        if (exists[i].name === username) {
-          return true;
-        }
-      }
-      return false;
+      return IsExist;
     },
     async getIdNewPost() {
       return storage.posts.length + 1;
     },
-    async getPostUser(username) {
-      const postUser: Post[] = [];
+    async getPostsOfUser(username) {
+      const userPosts: Post[] = [];
       for (let i = 0; i < storage.posts.length; i++) {
         if (storage.posts[i].authorUserId === username) {
-          postUser.push(storage.posts[i]);
+          userPosts.push(storage.posts[i]);
         }
       }
-      return postUser;
+      return userPosts;
     },
     async addFriendRequest(sendRequest, user) {
       for (let i = 0; i < storage.users.length; i++) {
@@ -98,22 +96,26 @@ export function createInMemoryApi(storage: Storage) {
       }
     },
     async getPostsUsers(users) {
-      const postUser: Post[] = [];
+      const postsUser: Post[] = [];
       for (let i = 0; i < storage.posts.length; i++) {
         for (let j = 0; j < users.length; j++) {
           if (storage.posts[i].authorUserId === users[j]) {
-            postUser.push(storage.posts[i]);
+            postsUser.push(storage.posts[i]);
           }
         }
       }
-      return postUser;
+      return postsUser;
     },
-    async getIsLikePost(user: string, id: number) {
-      const rit = storage.usersLikePost.filter(
+    async IsLikePost(user: string, id: number) {
+      const isLike = storage.usersLikePost.filter(
         (IsLikePost) =>
           IsLikePost.idPostIsLike === id && IsLikePost.userIsLike === user
       );
-      return rit[0].isLike;
+      return (
+        isLike.find((element, index) => {
+          return index === 0;
+        })?.isLike || false
+      );
     },
     async createConnectionUserPost(user: string, id: number) {
       const newPostItem: UserLikePost = {
@@ -130,24 +132,46 @@ export function createInMemoryApi(storage: Storage) {
         }
       }
     },
-    async likePost(id) {
+    async likePost(user, id) {
+      let IsLik = false;
+      for (const userAndPosts of storage.usersLikePost) {
+        if (
+          userAndPosts.userIsLike === user &&
+          userAndPosts.idPostIsLike === id
+        ) {
+          IsLik = userAndPosts.isLike;
+        }
+      }
       for (const post of storage.posts) {
         if (post.id === id) {
-          post.numberOfLike++;
+          if (IsLik === true) {
+            post.numberOfLike--;
+          } else {
+            post.numberOfLike++;
+          }
         }
       }
     },
+    async disLikePost(id) {
+      for (const post of storage.posts) {
+        if (post.id === id) {
+          post.numberOfLike--;
+        }
+      }
+    },
+
     async addComment(comment: Comment) {
       storage.comments.push(comment);
     },
     async getComment(id: number) {
-      const comment: Comment[] = [];
-      for (let i = 0; i < storage.comments.length; i++) {
-        if (id === storage.comments[i].idPost) {
-          comment.push(storage.comments[i]);
+      const comments: Comment[] = [];
+      storage.comments.find((element, index) => {
+        if (element.idPost === id) {
+          comments.push(element);
         }
-      }
-      return comment;
+      });
+
+      return comments;
     },
   };
   return api;

@@ -59,7 +59,64 @@ export const Comments = () => {
       ) : (
         <>
           <StyledCounter>
-            <StampaPost post={singlePost} setValueComment={setValueComment} />
+            <Card
+              style={{
+                width: "350px",
+                marginLeft: "1%",
+                marginTop: "30px",
+                borderRadius: "15px",
+              }}
+            >
+              <CardActionArea>
+                <CardContent style={{ display: "flex", gap: "16px" }}>
+                  <div>
+                    <Avatar alt="Remy Sharp" src="asset/social.jpg" />
+                  </div>
+                  <div>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {post.authorUserId} (POST)
+                    </Typography>
+                  </div>
+                </CardContent>
+                <CardContent>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontSize="30px"
+                  >
+                    {post.content}
+                  </Typography>
+
+                  <TextField
+                    id="outlined-basic"
+                    label="lascia un commento:"
+                    variant="outlined"
+                    onChange={(event) => {
+                      setValueComment(event.currentTarget.value);
+                    }}
+                  />
+                  <Button
+                    className="returnHome"
+                    variant="contained"
+                    onClick={() => {
+                      const timeElapsed = Date.now();
+                      const today = new Date(timeElapsed);
+
+                      const newComment: Comment = {
+                        userWhoComment: utenteConnesso,
+                        idPost: singlePost.id,
+                        date: today,
+                        comment: valueComment,
+                      };
+                      api.addComment(newComment);
+                      queryClient.invalidateQueries(["comment"]);
+                    }}
+                  >
+                    invio
+                  </Button>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </StyledCounter>
           <StyledCounter>
             <Box
@@ -70,25 +127,6 @@ export const Comments = () => {
               noValidate
               autoComplete="off"
             ></Box>
-            <Button
-              className="returnHome"
-              variant="contained"
-              onClick={() => {
-                const timeElapsed = Date.now();
-                const today = new Date(timeElapsed);
-
-                const newComment: Comment = {
-                  userWhoComment: utenteConnesso,
-                  idPost: singlePost.id,
-                  date: today,
-                  comment: valueComment,
-                };
-                api.addComment(newComment);
-                queryClient.invalidateQueries(["comment"]);
-              }}
-            >
-              invio
-            </Button>
           </StyledCounter>
           <StampaCommenti comments={comments} />
           <StyledCounter>
@@ -153,43 +191,5 @@ export function StampaPost({
   post: Post;
   setValueComment: any;
 }) {
-  return (
-    <>
-      <Card
-        style={{
-          width: "350px",
-          marginLeft: "1%",
-          marginTop: "30px",
-          borderRadius: "15px",
-        }}
-      >
-        <CardActionArea>
-          <CardContent style={{ display: "flex", gap: "16px" }}>
-            <div>
-              <Avatar alt="Remy Sharp" src="asset/social.jpg" />
-            </div>
-            <div>
-              <Typography gutterBottom variant="h5" component="div">
-                {post.authorUserId} (POST)
-              </Typography>
-            </div>
-          </CardContent>
-          <CardContent>
-            <Typography variant="body2" color="text.secondary" fontSize="30px">
-              {post.content}
-            </Typography>
-
-            <TextField
-              id="outlined-basic"
-              label="lascia un commento:"
-              variant="outlined"
-              onChange={(event) => {
-                setValueComment(event.currentTarget.value);
-              }}
-            />
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </>
-  );
+  return <></>;
 }

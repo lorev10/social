@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import style from "styled-components";
 import { useQuery } from "react-query";
-import { ApiContext } from "./api";
+import { Api, ApiContext, User } from "../components/api";
 
 const Spinner = style.div`
   border: 10px solid #1966FF;
@@ -41,12 +41,12 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 const StyledTyppgraphy = styled(Typography)`
-  color: white;
+  color: black;
   font-family: Arial Black;
 `;
 
 const StyledList = styled(List)`
-  background: #9575cd;
+  border: black;
 `;
 
 const Home = () => {
@@ -56,40 +56,6 @@ const Home = () => {
   const { status, data } = useQuery(["userRegister"], async () => {
     return await api.getUsers();
   });
-
-  function stampaNewUserd() {
-    const newData = data?.map((data) => {
-      return (
-        <>
-          <StyledList dense={dense}>
-            <StyledNavLink to="/homepage">
-              <ListItem
-                secondaryAction={
-                  <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                  </IconButton>
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar>{}</Avatar>
-                </ListItemAvatar>
-
-                <ListItemText
-                  disableTypography
-                  primary={<StyledTyppgraphy>{data.name}</StyledTyppgraphy>}
-                  onClick={() => {
-                    api.login(data.name);
-                  }}
-                />
-              </ListItem>
-            </StyledNavLink>
-          </StyledList>
-        </>
-      );
-    });
-
-    return newData;
-  }
 
   return (
     <>
@@ -116,7 +82,41 @@ const Home = () => {
       ) : status === "error" ? (
         <span>error</span>
       ) : (
-        <>{stampaNewUserd()}</>
+        <>
+          {data?.map((data) => {
+            return (
+              <>
+                <StyledList dense={dense}>
+                  <StyledNavLink to="/homepage">
+                    <ListItem
+                      secondaryAction={
+                        <IconButton edge="end" aria-label="delete">
+                          <DeleteIcon />
+                        </IconButton>
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar>{}</Avatar>
+                      </ListItemAvatar>
+
+                      <ListItemText
+                        disableTypography
+                        primary={
+                          <StyledTyppgraphy key={data.name}>
+                            {data.name}
+                          </StyledTyppgraphy>
+                        }
+                        onClick={() => {
+                          api.login(data.name);
+                        }}
+                      />
+                    </ListItem>
+                  </StyledNavLink>
+                </StyledList>
+              </>
+            );
+          })}
+        </>
       )}
     </>
   );

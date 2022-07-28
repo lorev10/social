@@ -13,12 +13,13 @@ import { NavLink } from "react-router-dom";
 
 export default function PrintPostUser(props: any) {
   const api = useContext(ApiContext);
-  const users = props.user;
+  const userLoggato = props.user;
+  const [numberOfLik, setNumberOfLik] = React.useState(0);
 
   const { status, data: postUsers } = useQuery(
     ["PostUsersFriend"],
     async () => {
-      return await api.getPostsUsers(users);
+      return await api.getPostsUsers(userLoggato);
     }
   );
 
@@ -58,10 +59,22 @@ export default function PrintPostUser(props: any) {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <img className="likeIcon" src="asset/like.png" alt="" />
+                <img
+                  className="likeIcon"
+                  src="asset/like.png"
+                  alt=""
+                  style={{ height: "30px" }}
+                  onClick={() => {
+                    api.likePost(userLoggato, posts[i].id);
+
+                    setNumberOfLik(posts[i].numberOfLike);
+                  }}
+                />
+                piace a{" "}
+                {numberOfLik === 0 ? posts[i].numberOfLike : numberOfLik}
                 <NavLink
                   to="/comments"
-                  state={{ post: posts[i], userLoggato: users }}
+                  state={{ post: posts[i], userLoggato: userLoggato }}
                 >
                   <img
                     src="asset/commenta.png"
@@ -90,3 +103,5 @@ export default function PrintPostUser(props: any) {
     </>
   );
 }
+
+export function StampaCommenti({ comments }: { comments: Comment[] }) {}

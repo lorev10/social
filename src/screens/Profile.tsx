@@ -1,11 +1,11 @@
-import Topbar from "./TopBar";
+import Topbar from "../components/TopBar";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ScheduleSendIcon from "@mui/icons-material/ScheduleSend";
-import { ApiContext } from "./api";
+import { ApiContext } from "../components/api";
 import style from "styled-components";
-import PrintPostUser from "./PrintPostUser";
+import PrintPostUser from "../components/PrintPostUser";
 import { useQuery } from "react-query";
 
 const StyleDivProfile = style.div`
@@ -17,7 +17,7 @@ const StyleDivRightTop = style.div`
       display: flex;
       align-items: center;
       justify-content: space-around;
-      color: white;
+      color: black;
 
 `;
 
