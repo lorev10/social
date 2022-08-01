@@ -10,7 +10,7 @@ import {
   createInMemoryApi,
 } from "./components/inMemomoryApi";
 import { createGlobalStyle } from "styled-components";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { createLocalStorageApi } from "./components/LocalStorageApi";
 import { Comments } from "./screens/Comments";
 
