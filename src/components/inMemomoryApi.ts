@@ -1,3 +1,4 @@
+import { ContactlessOutlined } from "@mui/icons-material";
 import { Api, Comment, Post, User, UserLikePost } from "./api";
 
 export function createInMemoryApi(storage: Storage) {
@@ -106,16 +107,37 @@ export function createInMemoryApi(storage: Storage) {
       }
       return postsUser;
     },
+    async SetClickLike(user: string, id: number) {
+      for (let i = 0; i < storage.usersLikePost.length; i++) {
+        if (
+          storage.usersLikePost[i].idPostIsLike === id &&
+          storage.usersLikePost[i].userIsLike === user
+        ) {
+        }
+      }
+    },
     async IsLikePost(user: string, id: number) {
-      const isLike = storage.usersLikePost.filter(
-        (IsLikePost) =>
-          IsLikePost.idPostIsLike === id && IsLikePost.userIsLike === user
-      );
-      return (
+      let isLike = [];
+      for (const IsLikePost of storage.usersLikePost) {
+        if (IsLikePost.idPostIsLike === id && IsLikePost.userIsLike === user) {
+          isLike.push(IsLikePost);
+        }
+      }
+      if (isLike === []) {
+        const newElement: UserLikePost = {
+          idPostIsLike: id,
+          isLike: true,
+          userIsLike: user,
+        };
+
+        storage.usersLikePost.push(newElement);
+      }
+      const el =
         isLike.find((element, index) => {
           return index === 0;
-        })?.isLike || false
-      );
+        })?.isLike || false;
+
+      return el;
     },
     async createConnectionUserPost(user: string, id: number) {
       const newPostItem: UserLikePost = {

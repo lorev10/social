@@ -21,6 +21,7 @@ export type Api = {
   getFriends(user: string): Promise<Array<string>>;
   removeRequest(user: string, friend: string): Promise<void>;
   getPostsUsers(users: string[]): Promise<Post[]>;
+  SetClickLike(user: string, id: number): Promise<void>;
   IsLikePost(user: string, id: number): Promise<boolean>;
   createConnectionUserPost(user: string, id: number): Promise<void>;
   changeValueIsLikePost(user: string, id: number): Promise<void>;

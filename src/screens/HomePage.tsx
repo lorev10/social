@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import TopBar from "../components/TopBar";
 import styled from "styled-components";
-import { Api, ApiContext, Post } from "../components/api";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { ApiContext, Post } from "../components/api";
+import { useQuery, useQueryClient } from "react-query";
 import style from "styled-components";
 import {
   Avatar,
@@ -198,7 +198,12 @@ const HomePage = () => {
                           <Avatar alt="Remy Sharp" src="asset/social.jpg" />
                         </div>
                         <div>
-                          <Typography gutterBottom variant="h5" component="div">
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                            key={allPost[i].id}
+                          >
                             {allPost[i].authorUserId}
                           </Typography>
                         </div>
@@ -221,7 +226,11 @@ const HomePage = () => {
                         style={{ height: "30px" }}
                         onClick={() => {
                           api.likePost(currentUser, allPost[i].id);
-
+                          const value = api.IsLikePost(
+                            currentUser,
+                            allPost[i].id
+                          );
+                          api.SetClickLike(currentUser, allPost[i].id);
                           setNumberOfLik(allPost[i].numberOfLike);
                         }}
                       />

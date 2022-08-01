@@ -4,9 +4,7 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
-  Divider,
   List,
   ListItem,
   ListItemAvatar,
@@ -20,11 +18,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { ApiContext, Comment, Post } from "../components/api";
 
-const StyledSection = styled.section`
-  width: 1366px;
-  height: 768px;
-`;
-
 const StyledCounter = styled.div`
   margin-top: 20px;
 `;
@@ -34,7 +27,6 @@ export const Comments = () => {
   const api = useContext(ApiContext);
 
   const singlePost: Post = post.post;
-  const user: string = post.userLoggato;
   const queryClient = useQueryClient();
   const [valueComment, setValueComment] = React.useState("");
   const { status: statusComment, data: comments } = useQuery(
@@ -74,7 +66,7 @@ export const Comments = () => {
                   </div>
                   <div>
                     <Typography gutterBottom variant="h5" component="div">
-                      {post.authorUserId} (POST)
+                      {singlePost.authorUserId} (POST)
                     </Typography>
                   </div>
                 </CardContent>
@@ -84,7 +76,7 @@ export const Comments = () => {
                     color="text.secondary"
                     fontSize="30px"
                   >
-                    {post.content}
+                    {singlePost.content}
                   </Typography>
 
                   <TextField

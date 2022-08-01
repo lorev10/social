@@ -1,12 +1,9 @@
 import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 import { NavLink } from "react-router-dom";
 import { ApiContext } from "../components/api";
 import styled from "styled-components";
-import { useQuery } from "react-query";
-import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
 
 const StyledButtonDistance = styled.span`
   margin-right: 20px;

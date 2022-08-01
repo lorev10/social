@@ -96,7 +96,7 @@ const Home = () => {
                       }
                     >
                       <ListItemAvatar>
-                        <Avatar>{}</Avatar>
+                        <Avatar key={data.id}>{}</Avatar>
                       </ListItemAvatar>
 
                       <ListItemText
