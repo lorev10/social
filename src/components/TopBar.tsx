@@ -98,7 +98,11 @@ export default function Topbar() {
                       className="topbarLink"
                       style={{ textDecoration: "none" }}
                     >
-                      <SearchIcon className="searchIcon" onClick={() => {}} />
+                      <SearchIcon
+                        className="searchIcon"
+                        style={{ color: "black" }}
+                        onClick={() => {}}
+                      />
                     </NavLink>
 
                     <input
@@ -203,7 +207,6 @@ export default function Topbar() {
                               <Typography sx={{ p: 2 }}>
                                 <div>{userFriend}</div>
                                 <div>
-                                  {" "}
                                   <button
                                     onClick={() => {
                                       api.addFriend(user, userFriend);

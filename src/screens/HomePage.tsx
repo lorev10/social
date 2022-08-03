@@ -10,10 +10,14 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  CardHeader,
+  IconButton,
   Typography,
 } from "@mui/material";
 import PrintPostUser from "../components/PrintPostUser";
 import { NavLink } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 const ButtonCondividi = styled.button`
   border: none;
@@ -44,6 +48,10 @@ const Spinner = style.div`
       transform: rotate(360deg);
     }
   }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
 `;
 
 const HomePage = () => {
@@ -106,7 +114,6 @@ const HomePage = () => {
       statusQueryAllPost === "loading" ||
       statusQueryNameFriends === "loading" ? (
         <span>
-          {" "}
           <Spinner />
         </span>
       ) : status === "error" ||
@@ -120,8 +127,9 @@ const HomePage = () => {
 
           <Card
             style={{
-              width: "350px",
+              width: "365.3px",
               marginLeft: "1%",
+              marginRight: "1%",
               marginTop: "30px",
               borderRadius: "15px",
             }}
@@ -129,7 +137,11 @@ const HomePage = () => {
             <CardActionArea>
               <CardContent style={{ display: "flex", gap: "16px" }}>
                 <div>
-                  <Avatar alt="Remy Sharp" src="asset/social.jpg" />
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="asset/social.jpg"
+                    variant="square"
+                  />
                 </div>
                 <div>
                   <Typography gutterBottom variant="h5" component="div">
@@ -186,69 +198,73 @@ const HomePage = () => {
                 <>
                   <Card
                     style={{
-                      width: "350px",
+                      width: "365.3px",
                       marginLeft: "1%",
+                      marginRight: "1%",
                       marginTop: "30px",
                       borderRadius: "15px",
                     }}
                   >
-                    <CardActionArea>
-                      <CardContent style={{ display: "flex", gap: "16px" }}>
-                        <div>
-                          <Avatar alt="Remy Sharp" src="asset/social.jpg" />
-                        </div>
-                        <div>
-                          <Typography
-                            gutterBottom
-                            variant="h5"
-                            component="div"
-                            key={allPost[i].id}
-                          >
-                            {allPost[i].authorUserId}
-                          </Typography>
-                        </div>
-                      </CardContent>
-                      <CardContent>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontSize="30px"
-                        >
-                          {allPost[i].content}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                      <img
-                        className="likeIcon"
-                        src="asset/like.png"
-                        alt=""
-                        style={{ height: "30px" }}
-                        onClick={() => {
-                          api.likePost(currentUser, allPost[i].id);
-                          const value = api.IsLikePost(
-                            currentUser,
-                            allPost[i].id
-                          );
-                          api.SetClickLike(currentUser, allPost[i].id);
-                          setNumberOfLik(allPost[i].numberOfLike);
-                        }}
-                      />
-                      piace a{" "}
-                      {numberOfLik === 0
-                        ? allPost[i].numberOfLike
-                        : numberOfLik}
-                      <NavLink
+                    <CardHeader
+                      avatar={
+                        <Avatar
+                          aria-label="recipe"
+                          variant="square"
+                          src="asset/social.jpg"
+                        ></Avatar>
+                      }
+                      title={allPost[i].authorUserId}
+                      subheader={
+                        "" +
+                        allPost[i].date.getDay() +
+                        "/" +
+                        "" +
+                        allPost[i].date.getMonth() +
+                        "/" +
+                        allPost[i].date.getFullYear() +
+                        " "
+                      }
+                      action={
+                        <IconButton
+                          aria-label="expand"
+                          style={{ marginRight: "180px" }}
+                        ></IconButton>
+                      }
+                      style={{ align: "left", marginRight: "30px" }}
+                    />
+                    <Typography fontSize="30px" style={{ paddingLeft: "8px" }}>
+                      {allPost[i].content}
+                    </Typography>
+                    <CardActions disableSpacing>
+                      <IconButton aria-label="add to favorites">
+                        <FavoriteIcon
+                          onClick={() => {
+                            api.likePost(currentUser, allPost[i].id);
+                            const value = api.IsLikePost(
+                              currentUser,
+                              allPost[i].id
+                            );
+                            api.changeValueIsLikePost(
+                              currentUser,
+                              allPost[i].id
+                            );
+                            api.SetClickLike(currentUser, allPost[i].id);
+                            setNumberOfLik(allPost[i].numberOfLike);
+                          }}
+                        />
+                        piace a {allPost[i].numberOfLike}
+                        {/* {numberOfLik === 0
+                          ? allPost[i].numberOfLike
+                          : numberOfLik} */}
+                      </IconButton>
+                      <StyledNavLink
                         to="/comments"
                         state={{ post: allPost[i], userLoggato: currentUser }}
                       >
-                        <img
-                          src="asset/commenta.png"
-                          alt=""
-                          style={{ height: "30px" }}
-                          onClick={() => {}}
-                        />
-                      </NavLink>
+                        <IconButton aria-label="add to favorites">
+                          <ChatBubbleOutlineIcon /> commenti
+                        </IconButton>
+                      </StyledNavLink>
                     </CardActions>
                   </Card>
                 </>

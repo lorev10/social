@@ -76,7 +76,6 @@ const Home = () => {
 
       {status === "loading" ? (
         <span>
-          {" "}
           <Spinner />
         </span>
       ) : status === "error" ? (
@@ -90,13 +89,17 @@ const Home = () => {
                   <StyledNavLink to="/homepage">
                     <ListItem
                       secondaryAction={
-                        <IconButton edge="end" aria-label="delete">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          key={data.id}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       }
                     >
                       <ListItemAvatar>
-                        <Avatar key={data.id}>{}</Avatar>
+                        <Avatar key={data.name}>{}</Avatar>
                       </ListItemAvatar>
 
                       <ListItemText

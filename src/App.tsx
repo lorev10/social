@@ -15,15 +15,15 @@ import { createLocalStorageApi } from "./components/LocalStorageApi";
 import { Comments } from "./screens/Comments";
 
 const api = createInMemoryApi(createEmptyStorage());
-const localStorageApi = createLocalStorageApi("0");
+const localStorageApi = createLocalStorageApi("3");
 const queryClient = new QueryClient();
 
 const GlobalStyleBody = createGlobalStyle`
   body {
     margin: 0;
     height: 100%;
-    background: #9575cd;
-    color: #ffffff;
+    background: #EFEFEF;
+    
   }`;
 
 const GlobalStyleApp = createGlobalStyle`
@@ -35,19 +35,22 @@ const GlobalStyleApp = createGlobalStyle`
 export default function App() {
   return (
     <ApiContext.Provider value={api}>
-      <GlobalStyleBody />
-      <GlobalStyleApp />
-      <QueryClientProvider client={queryClient}>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/*" element={<Home />} />
-            <Route path="/homepage" element={<HomePage />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/comments" element={<Comments />} />
-          </Routes>
-        </Router>
-      </QueryClientProvider>
+      <ApiContext.Provider value={localStorageApi}>
+        <GlobalStyleBody />
+        <GlobalStyleApp />
+
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/*" element={<Home />} />
+              <Route path="/homepage" element={<HomePage />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/comments" element={<Comments />} />
+            </Routes>
+          </Router>
+        </QueryClientProvider>
+      </ApiContext.Provider>
     </ApiContext.Provider>
   );
 }

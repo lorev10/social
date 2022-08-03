@@ -1,17 +1,16 @@
-import { ContactlessOutlined } from "@mui/icons-material";
 import { Api, Comment, Post, User, UserLikePost } from "./api";
 
 export function createInMemoryApi(storage: Storage) {
   const api: Api = {
     async getUsers() {
       await new Promise((resolve) =>
-        setTimeout(resolve, Math.round(Math.random() * 5001))
+        setTimeout(resolve, Math.round(Math.random() * 3001))
       );
       return storage.users;
     },
     async getPostsByUser({ authorUserId, page, size }) {
       await new Promise((resolve) =>
-        setTimeout(resolve, Math.round(Math.random() * 5001))
+        setTimeout(resolve, Math.round(Math.random() * 3001))
       );
       const rit = storage.posts
         .filter((post) => post.authorUserId === authorUserId)
@@ -123,6 +122,7 @@ export function createInMemoryApi(storage: Storage) {
           isLike.push(IsLikePost);
         }
       }
+
       if (isLike === []) {
         const newElement: UserLikePost = {
           idPostIsLike: id,
@@ -131,13 +131,13 @@ export function createInMemoryApi(storage: Storage) {
         };
 
         storage.usersLikePost.push(newElement);
+        isLike[0] = newElement;
       }
-      const el =
-        isLike.find((element, index) => {
-          return index === 0;
-        })?.isLike || false;
+      const el = isLike.find((element, index) => {
+        return index === 0;
+      });
 
-      return el;
+      return el?.isLike || false;
     },
     async createConnectionUserPost(user: string, id: number) {
       const newPostItem: UserLikePost = {

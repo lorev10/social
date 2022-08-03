@@ -1,10 +1,9 @@
 import {
   Avatar,
-  Box,
   Button,
   Card,
-  CardActionArea,
-  CardContent,
+  CardHeader,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -50,85 +49,86 @@ export const Comments = () => {
         <span>error</span>
       ) : (
         <>
-          <StyledCounter>
+          <>
             <Card
-              style={{
-                width: "350px",
-                marginLeft: "1%",
-                marginTop: "30px",
-                borderRadius: "15px",
+              sx={{
+                width: "100%%",
+                alignContent: "center",
               }}
             >
-              <CardActionArea>
-                <CardContent style={{ display: "flex", gap: "16px" }}>
-                  <div>
-                    <Avatar alt="Remy Sharp" src="asset/social.jpg" />
-                  </div>
-                  <div>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {singlePost.authorUserId} (POST)
-                    </Typography>
-                  </div>
-                </CardContent>
-                <CardContent>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    fontSize="30px"
-                  >
-                    {singlePost.content}
-                  </Typography>
+              <CardHeader
+                avatar={
+                  <Avatar
+                    aria-label="recipe"
+                    variant="square"
+                    src="asset/social.jpg"
+                  ></Avatar>
+                }
+                title={singlePost.authorUserId}
+                subheader={
+                  "" +
+                  singlePost.date.getDay() +
+                  "/" +
+                  "" +
+                  singlePost.date.getMonth() +
+                  "/" +
+                  singlePost.date.getFullYear() +
+                  " "
+                }
+                action={
+                  <IconButton
+                    aria-label="expand"
+                    style={{ marginRight: "180px" }}
+                  ></IconButton>
+                }
+                style={{ align: "left", marginRight: "30px" }}
+              />
+              <Typography fontSize="30px" style={{ paddingLeft: "8px" }}>
+                {singlePost.content}
+              </Typography>
 
-                  <TextField
-                    id="outlined-basic"
-                    label="lascia un commento:"
-                    variant="outlined"
-                    onChange={(event) => {
-                      setValueComment(event.currentTarget.value);
-                    }}
-                  />
-                  <Button
-                    className="returnHome"
-                    variant="contained"
-                    onClick={() => {
-                      const timeElapsed = Date.now();
-                      const today = new Date(timeElapsed);
-
-                      const newComment: Comment = {
-                        userWhoComment: utenteConnesso,
-                        idPost: singlePost.id,
-                        date: today,
-                        comment: valueComment,
-                      };
-                      api.addComment(newComment);
-                      queryClient.invalidateQueries(["comment"]);
-                    }}
-                  >
-                    invio
-                  </Button>
-                </CardContent>
-              </CardActionArea>
+              <IconButton aria-label="share"></IconButton>
+              <IconButton aria-label="add to favorites"></IconButton>
             </Card>
-          </StyledCounter>
-          <StyledCounter>
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": { m: 1, width: "25ch" },
-              }}
-              noValidate
-              autoComplete="off"
-            ></Box>
-          </StyledCounter>
+          </>
+
           <StampaCommenti comments={comments} />
-          <StyledCounter>
-            {" "}
-            <NavLink to="/homepage" style={{ textDecoration: "none" }}>
-              <Button className="returnHome" variant="contained">
-                indietro
+          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+            <ListItem alignItems="flex-start">
+              <TextField
+                label="Comment"
+                id="outlined-size-comment"
+                size="small"
+                value={valueComment}
+                onChange={(event) => {
+                  setValueComment(event.currentTarget.value);
+                }}
+              />
+              <Button
+                className="returnHome"
+                onClick={() => {
+                  const timeElapsed = Date.now();
+                  const today = new Date(timeElapsed);
+
+                  const newComment: Comment = {
+                    userWhoComment: utenteConnesso,
+                    idPost: singlePost.id,
+                    date: today,
+                    comment: valueComment,
+                  };
+                  api.addComment(newComment);
+                  queryClient.invalidateQueries(["comment"]);
+                  setValueComment("");
+                }}
+              >
+                invio
               </Button>
-            </NavLink>
-          </StyledCounter>
+              <NavLink to="/homepage" style={{ textDecoration: "none" }}>
+                <Button className="returnHome">indietro</Button>
+              </NavLink>
+            </ListItem>
+          </List>
+          <StyledCounter> </StyledCounter>
         </>
       )}
     </>
@@ -140,19 +140,19 @@ export function StampaCommenti({ comments }: { comments: Comment[] }) {
     if (Object.keys(comments[i]).length === 0) {
     } else {
       return (
-        <List
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        >
+        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
               <Avatar
                 alt={comments[i].userWhoComment}
-                src="/static/images/avatar/1.jpg"
+                src="asset/social.jpg"
+                variant="square"
               />
             </ListItemAvatar>
 
             <ListItemText
               primary={comments[i].userWhoComment}
+              title={"ddd"}
               style={{ color: "black" }}
               secondary={
                 <React.Fragment>

@@ -3,13 +3,20 @@ import Typography from "@mui/material/Typography";
 import {
   Avatar,
   Card,
-  CardActionArea,
   CardActions,
-  CardContent,
+  CardHeader,
+  IconButton,
 } from "@mui/material";
-import { ApiContext, Post } from "./api";
+import { ApiContext } from "./api";
 import { useQuery, useQueryClient } from "react-query";
 import { NavLink } from "react-router-dom";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import styled from "styled-components";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+`;
 
 export default function PrintPostUser(props: any) {
   const api = useContext(ApiContext);
@@ -52,45 +59,55 @@ export default function PrintPostUser(props: any) {
             if (Object.keys(postUsers[i]).length === 0) {
             } else {
               return (
-                <>
-                  <Card
-                    style={{
-                      width: "350px",
-                      marginLeft: "1%",
-                      marginTop: "30px",
-                      borderRadius: "15px",
-                    }}
-                  >
-                    <CardActionArea>
-                      <CardContent style={{ display: "flex", gap: "16px" }}>
-                        <div>
-                          <Avatar alt="Remy Sharp" src="asset/social.jpg" />
-                        </div>
-                        <div>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {postUsers[i].authorUserId}
-                          </Typography>
-                        </div>
-                      </CardContent>
-                      <CardContent>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontSize="30px"
-                        >
-                          {postUsers[i].content}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                      <img
-                        className="likeIcon"
-                        src="asset/like.png"
-                        alt=""
-                        style={{ height: "30px" }}
+                <Card
+                  style={{
+                    width: "365.3px",
+                    marginLeft: "1%",
+                    marginRight: "1%",
+                    marginTop: "30px",
+                    borderRadius: "15px",
+                  }}
+                >
+                  <CardHeader
+                    avatar={
+                      <Avatar
+                        aria-label="recipe"
+                        variant="square"
+                        src="asset/social.jpg"
+                      ></Avatar>
+                    }
+                    title={postUsers[i].authorUserId}
+                    subheader={
+                      "" +
+                      postUsers[i].date.getDay() +
+                      "/" +
+                      "" +
+                      postUsers[i].date.getMonth() +
+                      "/" +
+                      postUsers[i].date.getFullYear() +
+                      " "
+                    }
+                    action={
+                      <IconButton
+                        aria-label="expand"
+                        style={{ marginRight: "180px" }}
+                      ></IconButton>
+                    }
+                    style={{ align: "left", marginRight: "30px" }}
+                  />
+                  <Typography fontSize="30px" style={{ paddingLeft: "8px" }}>
+                    {postUsers[i].content}
+                  </Typography>
+                  <CardActions disableSpacing>
+                    <IconButton aria-label="add to favorites">
+                      <FavoriteIcon
                         onClick={() => {
                           api.likePost(userConnected, postUsers[i].id);
                           const value = api.IsLikePost(
+                            userConnected,
+                            postUsers[i].id
+                          );
+                          api.changeValueIsLikePost(
                             userConnected,
                             postUsers[i].id
                           );
@@ -98,24 +115,18 @@ export default function PrintPostUser(props: any) {
                           setNumberOfLik(postUsers[i].numberOfLike);
                         }}
                       />
-                      piace a{" "}
-                      {numberOfLik === 0
-                        ? postUsers[i].numberOfLike
-                        : numberOfLik}
-                      <NavLink
-                        to="/comments"
-                        state={{ post: postUsers[i], userLoggato: userLoggato }}
-                      >
-                        <img
-                          src="asset/commenta.png"
-                          alt=""
-                          style={{ height: "30px" }}
-                          onClick={() => {}}
-                        />
-                      </NavLink>
-                    </CardActions>
-                  </Card>
-                </>
+                      piace a {postUsers[i].numberOfLike}
+                    </IconButton>
+                    <StyledNavLink
+                      to="/comments"
+                      state={{ post: postUsers[i], userLoggato: userConnected }}
+                    >
+                      <IconButton aria-label="add to favorites">
+                        <ChatBubbleOutlineIcon /> commenti
+                      </IconButton>
+                    </StyledNavLink>
+                  </CardActions>
+                </Card>
               );
             }
           })}

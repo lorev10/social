@@ -41,7 +41,6 @@ export const Login = () => {
         />
       </div>
       <StyledCounter>
-        {" "}
         <StyledNavLink to="/homepage">
           <StyledButtonDistance>
             <Button
